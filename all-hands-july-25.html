@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-First or Nothing: Our Transformation Wake-Up Call</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+            padding: 2rem;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #00d4ff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .slide h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+        }
+
+        .slide ul {
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .slide li {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ffffff;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+        }
+
+        .slide li:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .workflow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+
+        .workflow-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            flex: 1;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .workflow-item:hover {
+            transform: scale(1.05);
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .workflow-item::after {
+            content: "→";
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+
+        .workflow-item:last-child::after {
+            display: none;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 157, 0.1));
+            border: 2px solid rgba(0, 212, 255, 0.4);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid #00d4ff;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-left-color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            background: #00d4ff;
+            border-radius: 50%;
+            border: 3px solid #0f0f23;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card.success {
+            border-color: rgba(48, 209, 88, 0.5);
+        }
+
+        .comparison-card.warning {
+            border-color: rgba(255, 69, 58, 0.5);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .process-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .process-step {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            min-width: 200px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .process-step:hover {
+            transform: scale(1.05);
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .connector {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #ff6b9d);
+            position: relative;
+        }
+
+        .connector::after {
+            content: "";
+            position: absolute;
+            right: -5px;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #ff6b9d;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.5);
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            color: #00d4ff;
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .title-slide {
+            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+        }
+
+        .stats-slide {
+            background: radial-gradient(circle, rgba(255,107,157,0.1) 0%, transparent 70%);
+        }
+
+        .story-slide {
+            background: radial-gradient(circle, rgba(138,43,226,0.1) 0%, transparent 70%);
+        }
+
+        .warning-slide {
+            background: radial-gradient(circle, rgba(255,69,58,0.1) 0%, transparent 70%);
+        }
+
+        .success-story {
+            background: radial-gradient(circle, rgba(48,209,88,0.1) 0%, transparent 70%);
+        }
+
+        .call-to-action {
+            background: radial-gradient(circle, rgba(255,159,10,0.1) 0%, transparent 70%);
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #00d4ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .emphasis {
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            color: #00d4ff;
+            font-weight: bold;
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #87ceeb;
+            font-size: 1.4rem;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .slide h1 { font-size: 2rem; }
+            .slide h2 { font-size: 1.8rem; }
+            .slide h3 { font-size: 1.4rem; }
+            .slide p, .slide li { font-size: 1rem; }
+            .slide { padding: 1rem; }
+            .stat-number { font-size: 2rem; }
+            
+            .workflow-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .workflow-item::after {
+                content: "↓";
+                right: 50%;
+                bottom: -1.5rem;
+                top: auto;
+                transform: translateX(50%);
+            }
+            
+            .workflow-item:last-child::after {
+                display: none;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .process-flow {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .connector {
+                width: 2px;
+                height: 40px;
+                background: linear-gradient(180deg, #00d4ff, #ff6b9d);
+            }
+            
+            .connector::after {
+                content: "";
+                bottom: -5px;
+                top: auto;
+                right: -3px;
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-top: 8px solid #ff6b9d;
+                border-bottom: none;
+            }
+            
+            .slide li {
+                min-width: 280px;
+                max-width: 100%;
+            }
+        }
+
+        .presenter-note {
+            position: fixed;
+            bottom: 5rem;
+            left: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #cccccc;
+            max-width: 300px;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .show-notes .presenter-note {
+            display: block;
+        }
+
+        .notes-toggle {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .notes-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>AI-First or Nothing</h1>
+            <h2>Our Transformation Wake-Up Call</h2>
+            <p style="font-size: 1.5rem; margin-top: 2rem;">Every company faces one choice: <span class="highlight">AI-first or extinction</span></p>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Set the tone immediately. This is about survival, not innovation.
+            </div>
+        </div>
+
+        <!-- Slide 2: The Question That Decides Everything -->
+        <div class="slide warning-slide">
+            <h2>The Question That Decides Everything</h2>
+            <h3>Every company faces one choice: AI-first or extinction.</h3>
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <strong>1995:</strong> Every company faced <span class="emphasis">"Internet-first or nothing"</span>
+                </div>
+                <div class="timeline-item">
+                    <strong>2007:</strong> Every company faced <span class="emphasis">"Mobile-first or nothing"</span>
+                </div>
+                <div class="timeline-item">
+                    <strong>2024:</strong> Every company faces <span class="emphasis">"AI-first or nothing"</span>
+                </div>
+                <div class="timeline-item">
+                    <strong>Reality:</strong> The companies that hesitated are <span class="emphasis">footnotes in history</span>
+                </div>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Pause after each timeline item. Let the pattern sink in.
+            </div>
+        </div>
+
+        <!-- Slide 3: The Numbers Don't Lie -->
+        <div class="slide stats-slide">
+            <h2>The Numbers Don't Lie</h2>
+            <h3>AI adoption is accelerating faster than any technology in history.</h3>
+            <div class="workflow-container">
+                <div class="stat-card">
+                    <div class="stat-number">83%</div>
+                    <p>of companies say AI is a top priority</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">40%</div>
+                    <p>average productivity gains across engineering teams</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$15.7T</div>
+                    <p>AI's projected economic impact by 2030</p>
+                    <small style="color: #ff6b9d;">170x Croatia's GDP</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">200K+</div>
+                    <p>tech workers lost jobs in 2024-2025</p>
+                </div>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Emphasize the scale - $15.7T is larger than most countries' entire economies.
+            </div>
+        </div>
+
+        <!-- Slide 4: While We Debate, Others Deploy -->
+        <div class="slide warning-slide">
+            <h2>While We Debate, Others Deploy</h2>
+            <h3>Our competitors aren't waiting for perfect AI solutions.</h3>
+            <div class="process-flow">
+                <div class="process-step">
+                    <strong>Cursor AI</strong><br>
+                    80% growth in AI-powered code editor adoption
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>Glean</strong><br>
+                    $100M annual revenue from AI search, tripled in one year
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>Anthropic's Claude</strong><br>
+                    Now operates computers autonomously
+                </div>
+            </div>
+            <div class="quote" style="margin-top: 2rem;">
+                The question isn't <span class="emphasis">"if"</span> but <span class="emphasis">"how fast we catch up"</span>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> These are real companies your engineers probably know about - not theoretical examples.
+            </div>
+        </div>
+
+        <!-- Slide 5: The Kodak Moment -->
+        <div class="slide story-slide">
+            <h2>The Kodak Moment</h2>
+            <h3>Digital photography didn't kill Kodak - their refusal to adapt did.</h3>
+            <div class="workflow-container">
+                <div class="workflow-item">
+                    <strong>1975</strong><br>
+                    Kodak <span class="highlight">invented</span> the digital camera
+                </div>
+                <div class="workflow-item">
+                    <strong>Decision</strong><br>
+                    They <span class="emphasis">buried it</span> to protect film sales
+                </div>
+                <div class="workflow-item">
+                    <strong>1995</strong><br>
+                    <span class="emphasis">Kodak filed for bankruptcy</span>
+                </div>
+                <div class="workflow-item">
+                    <strong>Lesson</strong><br>
+                    Engineers who could have led transformation were <span class="emphasis">sidelined</span>
+                </div>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Draw the parallel: "We have engineers who could lead our AI transformation right now."
+            </div>
+        </div>
+
+        <!-- Slide 6: Netflix's Transformation Blueprint -->
+        <div class="slide success-story">
+            <h2>Netflix's Transformation Blueprint</h2>
+            <h3>Netflix killed their own DVD business to become streaming-first.</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card warning">
+                    <strong>2007: The Risk</strong><br>
+                    Netflix launched streaming while DVD profits soared<br>
+                    <span style="color: #ff6b9d;">Cannibalized their own revenue</span>
+                </div>
+                <div class="comparison-card success">
+                    <strong>2024: The Reward</strong><br>
+                    <span class="stat-number" style="font-size: 2rem;">230M</span> subscribers<br>
+                    <span class="stat-number" style="font-size: 2rem;">$31B</span> revenue
+                </div>
+            </div>
+            <div class="quote">
+                Meanwhile, Blockbuster called streaming <span class="emphasis">"a niche market"</span>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Emphasize the courage to cannibalize existing success.
+            </div>
+        </div>
+
+        <!-- Slide 7: Microsoft's AI-First Resurrection -->
+        <div class="slide success-story">
+            <h2>Microsoft's AI-First Resurrection</h2>
+            <h3>Microsoft's $13 billion OpenAI bet transformed them from declining to dominant.</h3>
+            <div class="workflow-container">
+                <div class="workflow-item">
+                    <strong>2019: The Problem</strong><br>
+                    Stock flat, losing cloud war to AWS
+                </div>
+                <div class="workflow-item">
+                    <strong>2023: The Bet</strong><br>
+                    $13B OpenAI partnership launched
+                </div>
+                <div class="workflow-item">
+                    <strong>2024: The Result</strong><br>
+                    <span class="stat-number">$3T</span> market cap<br>
+                    Leading AI infrastructure
+                </div>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> This is recent enough that everyone remembers Microsoft's struggles.
+            </div>
+        </div>
+
+        <!-- Slide 8: GitHub's Developer Revolution -->
+        <div class="slide success-story">
+            <h2>GitHub's Developer Revolution</h2>
+            <h3>GitHub Copilot didn't replace developers - it made them superhuman.</h3>
+            <div class="workflow-container">
+                <div class="stat-card">
+                    <div class="stat-number">88%</div>
+                    <p>increased productivity</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">74%</div>
+                    <p>focus on satisfying work</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">96%</div>
+                    <p>faster at repetitive tasks</p>
+                </div>
+            </div>
+            <div class="quote">
+                Developer satisfaction <span class="highlight">increased, not decreased</span>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Address the fear: "AI makes us better, not obsolete."
+            </div>
+        </div>
+
+        <!-- Slide 9: Our OSTE Project Shows the Future -->
+        <div class="slide call-to-action">
+            <h2>Our OSTE Project Shows the Future</h2>
+            <h3>We're already proving AI transformation works with smaller, faster teams.</h3>
+            <div class="process-flow">
+                <div class="process-step">
+                    <strong>OSTE Project</strong><br>
+                    Complete pivot to AI-first development
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>Team Structure</strong><br>
+                    Smaller, diverse, product-focused
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>Delivery Speed</strong><br>
+                    Months not years
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>Role Evolution</strong><br>
+                    Leaders adapting, engineers growing
+                </div>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> This is our proof of concept - we're not theorizing, we're doing it.
+            </div>
+        </div>
+
+        <!-- Slide 10: The Market Reality Check -->
+        <div class="slide warning-slide">
+            <h2>The Market Reality Check</h2>
+            <h3>Software engineers are already being replaced - the disruption is happening now.</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card warning">
+                    <strong>Jobs Disappearing</strong><br>
+                    <span class="stat-number">44%</span> of AI companies anticipate layoffs<br>
+                    <span class="stat-number">-24%</span> frontend job openings<br>
+                    <span style="color: #ff6b9d;">$150K → DoorDash delivery</span>
+                </div>
+                <div class="comparison-card success">
+                    <strong>Jobs Growing</strong><br>
+                    <span class="stat-number">+70%</span> AI/ML engineer roles<br>
+                    <span style="color: #00d4ff;">High demand, high pay</span>
+                </div>
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Make this personal - this is happening to people just like them, right now.
+            </div>
+        </div>
+
+        <!-- Slide 11: Join Our AI Development Projects -->
+        <div class="slide call-to-action">
+            <h2>Join Our AI Development Projects</h2>
+            <h3>We're running real AI projects now - anyone can contribute.</h3>
+            <ul>
+                <li>
+                    <strong>Active Projects</strong><br>
+                    Enhancing Digital Unit and AI development experience
+                </li>
+                <li>
+                    <strong>Engineering Policies</strong><br>
+                    Framework to guide AI experimentation
+                </li>
+                <li>
+                    <strong>Real Impact</strong><br>
+                    Contributing to AI-first transformation
+                </li>
+                <li>
+                    <strong>Your Choice</strong><br>
+                    <span class="highlight">Lead the change</span> or <span class="emphasis">watch it happen</span>
+                </li>
+            </ul>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> This is an invitation, not a mandate - but the opportunity won't last forever.
+            </div>
+        </div>
+
+        <!-- Slide 12: The Train Is Leaving -->
+        <div class="slide warning-slide">
+            <h2>The Train Is Leaving</h2>
+            <h3>The AI transformation is already moving - you can board or watch it go.</h3>
+            <ul>
+                <li>
+                    <strong>Leadership Vision</strong><br>
+                    Listen to what <span class="highlight">Marko, Jack, Sven, and Matko</span> are saying
+                </li>
+                <li>
+                    <strong>Opportunity</strong><br>
+                    Join the AI development projects - <span class="emphasis">or don't</span>
+                </li>
+                <li>
+                    <strong>Reality Check</strong><br>
+                    No guarantees, but adapters have the <span class="highlight">best chance</span>
+                </li>
+                <li>
+                    <strong>Market Advantage</strong><br>
+                    Turmoil creates our <span class="highlight">competitive edge</span>
+                </li>
+            </ul>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> Direct but not threatening - this is reality, not manipulation.
+            </div>
+        </div>
+
+        <!-- Slide 13: This Is Already Happening -->
+        <div class="slide call-to-action">
+            <h2>This Is Already Happening</h2>
+            <h3>We're not planning transformation - we're living it.</h3>
+            <div class="process-flow">
+                <div class="process-step">
+                    <strong>Operational Changes</strong><br>
+                    Rewiring work with Olympus and Thoughtcap
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>New Clients</strong><br>
+                    Opportunities beyond traditional model
+                </div>
+                <div class="connector"></div>
+                <div class="process-step">
+                    <strong>Organizational Shift</strong><br>
+                    Not sure yet, to come maybe...
+                </div>
+            </div>
+            <div class="quote">
+                "The market is in turmoil. Questions?"
+            </div>
+            <div class="presenter-note">
+                <strong>Presenter Note:</strong> This isn't about future plans - it's about current reality and what's next.
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">13</span>
+    </div>
+
+    <div class="notes-toggle" onclick="toggleNotes()">
+        📝 Notes
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function toggleNotes() {
+            document.body.classList.toggle('show-notes');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'Home') {
+                showSlide(0);
+            } else if (e.key === 'End') {
+                showSlide(totalSlides - 1);
+            } else if (e.key === 'n' || e.key === 'N') {
+                toggleNotes();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
