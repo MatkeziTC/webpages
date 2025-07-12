@@ -405,23 +405,6 @@
         <h1>Team Capacity Heatmap</h1>
         <div class="subtitle">Q3 2025 - Fresh Data Analysis</div>
 
-        <div class="api-key-section">
-            <h3>🤖 AI-Powered Insights</h3>
-            <p>Enter your OpenAI API key to generate dynamic insights based on the capacity data:</p>
-            <input type="password" id="api-key-input" class="api-key-input" placeholder="sk-...">
-            <button class="api-key-button" onclick="generateInsights()">Generate AI Insights</button>
-            <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                Your API key is stored only in your browser and never sent to our servers.
-            </p>
-        </div>
-
-        <div class="alert" id="insights-alert">
-            <div class="alert-title">⚠️ Key Findings</div>
-            <div id="insights-content">
-                Matko is at 100% capacity in July (overloaded). Jack has no projects assigned in August and September. Team capacity drops dramatically in September.
-            </div>
-        </div>
-
         <div class="view-selector">
             <button class="view-btn active" onclick="switchView('monthly')">Monthly View</button>
             <button class="view-btn" onclick="switchView('quarterly')">Quarterly View</button>
@@ -571,7 +554,26 @@
                     <span style="color: #28a745;">✓</span>
                 </div>
             </div>
+            
         </div>
+        <div class="container">
+            <div class="api-key-section">
+                <h3>🤖 AI-Powered Insights</h3>
+                <p>Enter your OpenAI API key to generate dynamic insights based on the capacity data:</p>
+                <input type="password" id="api-key-input" class="api-key-input" placeholder="sk-...">
+                <button class="api-key-button" onclick="generateInsights()">Generate AI Insights</button>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    Your API key is stored only in your browser and never sent to our servers.
+                </p>
+            </div>
+    
+            <div class="alert" id="insights-alert">
+                <div class="alert-title">⚠️ Key Findings</div>
+                <div id="insights-content">
+                    Matko is at 100% capacity in July (overloaded). Jack has no projects assigned in August and September. Team capacity drops dramatically in September.
+                </div>
+            </div>
+        </div>  
     </div>
 
     <script>
