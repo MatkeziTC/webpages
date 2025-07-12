@@ -8,12 +8,17 @@ on:
   schedule:
     - cron: '0 0 * * 1' # Run weekly on Mondays
 
+permissions:
+  contents: write  # This gives the workflow permission to push changes
+
 jobs:
   generate-insights:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -102,10 +107,10 @@ jobs:
         print("Insights generated successfully!")
         EOF
     
-    - name: Commit insights
+    - name: Commit and push insights
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
         git add insights.json
-        git commit -m "Update AI-generated insights" || echo "No changes to commit"
+        git commit -m "Update AI-generated insights [skip ci]" || echo "No changes to commit"
         git push 
