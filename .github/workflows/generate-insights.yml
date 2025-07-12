@@ -32,10 +32,10 @@ jobs:
         import os
         import json
         import pandas as pd
-        import openai
+        from openai import OpenAI
         
-        # Set up OpenAI
-        openai.api_key = os.environ['OPENAI_API_KEY']
+        # Set up OpenAI client
+        client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
         
         # Read CSV data
         df = pd.read_csv('RICE.csv')
@@ -52,26 +52,54 @@ jobs:
                 'September': person_data['Effort September'].fillna('0%').str.rstrip('%').astype(float).sum()
             }
         
-        # Generate insights using OpenAI
-        prompt = f"Analyze this team capacity data and provide insights:\n{json.dumps(capacity_summary, indent=2)}"
+        # Calculate team averages
+        team_stats = {
+            'july_avg': sum(p['July'] for p in capacity_summary.values()) / len(capacity_summary),
+            'august_avg': sum(p['August'] for p in capacity_summary.values()) / len(capacity_summary),
+            'september_avg': sum(p['September'] for p in capacity_summary.values()) / len(capacity_summary),
+            'overloaded': [name for name, data in capacity_summary.items() if any(v >= 90 for v in data.values())],
+            'underutilized': [name for name, data in capacity_summary.items() if all(v < 20 for v in data.values())]
+        }
         
-        response = openai.ChatCompletion.create(
+        # Generate insights using OpenAI
+        prompt = f"""Analyze this team capacity data for Q3 2025 and provide:
+        1. Key findings (2-3 sentences)
+        2. Critical issues
+        3. Specific recommendations
+        
+        Capacity Data:
+        {json.dumps(capacity_summary, indent=2)}
+        
+        Team Statistics:
+        - July Average: {team_stats['july_avg']:.1f}%
+        - August Average: {team_stats['august_avg']:.1f}%
+        - September Average: {team_stats['september_avg']:.1f}%
+        - Overloaded members (>=90%): {', '.join(team_stats['overloaded']) or 'None'}
+        - Underutilized members (<20% all months): {', '.join(team_stats['underutilized']) or 'None'}
+        """
+        
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are a project management analyst."},
+                {"role": "system", "content": "You are a project management analyst. Provide concise, actionable insights."},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            temperature=0.7,
+            max_tokens=500
         )
         
         insights = {
             "generated_at": pd.Timestamp.now().isoformat(),
             "key_findings": response.choices[0].message.content,
-            "capacity_data": capacity_summary
+            "capacity_data": capacity_summary,
+            "team_statistics": team_stats
         }
         
         # Save insights
         with open('insights.json', 'w') as f:
             json.dump(insights, f, indent=2)
+        
+        print("Insights generated successfully!")
         EOF
     
     - name: Commit insights
