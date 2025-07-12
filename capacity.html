@@ -342,6 +342,8 @@
             }
         }
     </style>
+    <!-- PapaParse CSV Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -507,100 +509,95 @@
 
     <script>
         // Fresh project data from the latest CSV analysis
-        const freshProjectData = {
-            "Matko": {
-                "July 2025": [
-                    { name: "North Stars Alignment", capacity: "25%", status: "Ongoing", role: "Owner", collaborators: null },
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Stop the drowning in the WIP across leadership", capacity: "10%", status: "In progress", role: "Owner", collaborators: null },
-                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Owner", collaborators: null },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
-                    { name: "Collaborate with OSTE on PR Workflow Initiative", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" },
-                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" },
-                    { name: "Cro→Eng Translation Infra", capacity: "5%", status: "In progress", role: "Owner", collaborators: null }
-                ],
-                "August 2025": [
-                    { name: "PTO (Personal Time Off)", capacity: "50%", status: "Backlog", role: "Owner", collaborators: null },
-                    { name: "North Stars Alignment", capacity: "15%", status: "Ongoing", role: "Owner", collaborators: null },
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
-                ],
-                "September 2025": [
-                    { name: "North Stars Alignment", capacity: "20%", status: "Ongoing", role: "Owner", collaborators: null },
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
-                ],
-                "Q3 2025": [
-                    { name: "North Stars Alignment", capacity: "20%", status: "Ongoing", role: "Owner", collaborators: null },
-                    { name: "PTO (Personal Time Off)", capacity: "17%", status: "Backlog", role: "Owner", collaborators: null },
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
-                    { name: "Stop the drowning in the WIP", capacity: "3%", status: "In progress", role: "Owner", collaborators: null }
-                ]
-            },
-            "Marko": {
-                "July 2025": [
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Matko Zurak,Sven Vukelić" },
-                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: null, owner: "Matko Zurak" },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Collaborate with OSTE on PR Workflow Initiative", capacity: "5%", status: "In progress", role: "Owner", collaborators: "Multiple" },
-                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Owner", collaborators: "Multiple" }
-                ],
-                "August 2025": [
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Matko Zurak,Sven Vukelić" },
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Owner", collaborators: "Multiple team leads" }
-                ],
-                "September 2025": [
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Owner", collaborators: "Multiple team leads" }
-                ],
-                "Q3 2025": [
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Matko Zurak,Sven Vukelić" },
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Lead Team Leads for '25", capacity: "3%", status: "Ongoing", role: "Owner", collaborators: "Multiple team leads" }
-                ]
-            },
-            "Sven": {
-                "July 2025": [
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Collaborate with OSTE on PR Workflow Initiative", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" },
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" },
-                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" }
-                ],
-                "August 2025": [
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
-                ],
-                "September 2025": [
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
-                ],
-                "Q3 2025": [
-                    { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "3%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" }
-                ]
-            },
-            "Jack": {
-                "July 2025": [
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Automate Meetings", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: null, owner: "Matko Zurak" },
-                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
-                ],
-                "August 2025": [
-                    { name: "No active projects", capacity: "0%", status: "Available", role: "Available", collaborators: null }
-                ],
-                "September 2025": [
-                    { name: "No active projects", capacity: "0%", status: "Available", role: "Available", collaborators: null }
-                ],
-                "Q3 2025": [
-                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "3%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" }
-                ]
-            }
-        };
+        let freshProjectData = {};
+
+        // --- CSV Data Loading & Heatmap Update Logic ---
+        const capacityTotals = {};
+
+        function getCapacityClass(value) {
+            if (value >= 90) return 'capacity-100';
+            if (value >= 70) return 'capacity-75';
+            if (value >= 50) return 'capacity-50';
+            if (value >= 25) return 'capacity-25';
+            return 'capacity-0';
+        }
+
+        function loadDataFromCSV() {
+            const csvPath = encodeURI('RICE 21e9c4d11f7a800db593ce0d559fe2fd_all.csv');
+            fetch(csvPath)
+                .then(r => r.text())
+                .then(text => {
+                    const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+                    processCSVData(parsed.data);
+                    updateHeatmapCells();
+                })
+                .catch(err => console.error('CSV load error:', err));
+        }
+
+        function processCSVData(rows) {
+            const months = ['July 2025', 'August 2025', 'September 2025'];
+            rows.forEach(row => {
+                const person = (row['Person'] || '').trim();
+                if (!person) return;
+
+                if (!freshProjectData[person]) freshProjectData[person] = {};
+
+                months.forEach((month, idx) => {
+                    const effortKey = idx === 0 ? 'Effort July' : idx === 1 ? 'Effort August' : 'Effort September';
+                    let effortStr = (row[effortKey] || '').trim();
+                    if (!effortStr) return;
+                    if (effortStr.endsWith('%')) effortStr = effortStr.slice(0, -1);
+                    const effort = parseFloat(effortStr);
+                    if (isNaN(effort) || effort === 0) return;
+
+                    // Track project details for drill-down
+                    if (!freshProjectData[person][month]) freshProjectData[person][month] = [];
+                    freshProjectData[person][month].push({
+                        name: row['Name'],
+                        capacity: effortStr + '%',
+                        status: row['Status'] || '',
+                        role: person === row['Owner'] ? 'Owner' : 'Collaborator',
+                        collaborators: row['Collaborators'] || '',
+                        owner: row['Owner']
+                    });
+
+                    // Aggregate totals
+                    if (!capacityTotals[person]) capacityTotals[person] = {};
+                    capacityTotals[person][month] = (capacityTotals[person][month] || 0) + effort;
+                });
+            });
+
+            // Calculate Q3 average and compile project list
+            Object.keys(capacityTotals).forEach(person => {
+                const jul = capacityTotals[person]['July 2025'] || 0;
+                const aug = capacityTotals[person]['August 2025'] || 0;
+                const sep = capacityTotals[person]['September 2025'] || 0;
+                const avg = Math.round((jul + aug + sep) / 3);
+                capacityTotals[person]['Q3 2025'] = avg;
+
+                const qProjects = [];
+                ['July 2025', 'August 2025', 'September 2025'].forEach(m => {
+                    (freshProjectData[person][m] || []).forEach(p => qProjects.push({ ...p }));
+                });
+                freshProjectData[person]['Q3 2025'] = qProjects;
+            });
+        }
+
+        function updateHeatmapCells() {
+            document.querySelectorAll('.heatmap-cell').forEach(cell => {
+                const person = cell.getAttribute('data-person');
+                const period = cell.getAttribute('data-period');
+                const total = (capacityTotals[person] && capacityTotals[person][period]) || 0;
+                cell.textContent = total + '%';
+                cell.setAttribute('data-capacity', total + '%');
+
+                // Refresh colour coding
+                ['capacity-0','capacity-25','capacity-50','capacity-75','capacity-100'].forEach(cls => cell.classList.remove(cls));
+                cell.classList.add(getCapacityClass(total));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDataFromCSV);
 
         function showDrillDown(cell) {
             const person = cell.getAttribute('data-person');
