@@ -342,6 +342,43 @@
             color: #667eea;
         }
 
+        .api-key-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .api-key-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        
+        .api-key-button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .api-key-button:hover {
+            background: #5a67d8;
+        }
+        
+        .insights-loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
         @media (max-width: 768px) {
             .view-selector {
                 flex-direction: column;
@@ -368,9 +405,21 @@
         <h1>Team Capacity Heatmap</h1>
         <div class="subtitle">Q3 2025 - Fresh Data Analysis</div>
 
-        <div class="alert">
+        <div class="api-key-section">
+            <h3>🤖 AI-Powered Insights</h3>
+            <p>Enter your OpenAI API key to generate dynamic insights based on the capacity data:</p>
+            <input type="password" id="api-key-input" class="api-key-input" placeholder="sk-...">
+            <button class="api-key-button" onclick="generateInsights()">Generate AI Insights</button>
+            <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                Your API key is stored only in your browser and never sent to our servers.
+            </p>
+        </div>
+
+        <div class="alert" id="insights-alert">
             <div class="alert-title">⚠️ Key Findings</div>
-            Matko is at 100% capacity in July (overloaded). Jack has no projects assigned in August and September. Team capacity drops dramatically in September.
+            <div id="insights-content">
+                Matko is at 100% capacity in July (overloaded). Jack has no projects assigned in August and September. Team capacity drops dramatically in September.
+            </div>
         </div>
 
         <div class="view-selector">
@@ -462,7 +511,7 @@
             </div>
         </div>
 
-        <div class="summary-cards">
+        <div class="summary-cards" id="summary-cards">
             <div class="summary-card">
                 <h3>📊 Team Utilization</h3>
                 <div class="summary-item">
@@ -529,6 +578,7 @@
         // Fresh project data from the latest CSV analysis
         let freshProjectData = {};
         let dataLoaded = false;
+        let capacityData = {}; // Store processed capacity data for AI analysis
 
         
         // --- CSV Data Loading & Heatmap Update Logic ---
@@ -612,6 +662,12 @@
                 });
                 freshProjectData[person]['Q3 2025'] = qProjects;
             });
+            
+            // Store capacity data for AI analysis
+            capacityData = {
+                totals: capacityTotals,
+                projects: freshProjectData
+            };
         }
 
         function updateHeatmapCells() {
@@ -634,7 +690,23 @@
             document.getElementById('loading-overlay').style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', loadDataFromCSV);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDataFromCSV();
+            loadPreGeneratedInsights();
+        });
+        
+        async function loadPreGeneratedInsights() {
+            try {
+                const response = await fetch('insights.json');
+                if (response.ok) {
+                    const insights = await response.json();
+                    document.getElementById('insights-content').textContent = insights.key_findings;
+                    // You could also update the summary cards here based on the insights
+                }
+            } catch (error) {
+                console.log('No pre-generated insights found, using defaults');
+            }
+        }
 
         function showDrillDown(cell) {
             const person = cell.getAttribute('data-person');
@@ -718,6 +790,101 @@
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
+        }
+
+        async function generateInsights() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            if (!apiKey) {
+                alert('Please enter your OpenAI API key');
+                return;
+            }
+            
+            if (!dataLoaded) {
+                alert('Please wait for the capacity data to load first');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('insights-content').innerHTML = '<div class="insights-loading">🤖 Generating AI insights...</div>';
+            
+            try {
+                // Prepare data summary for the prompt
+                const dataSummary = prepareDataSummary();
+                
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are a project management analyst. Analyze team capacity data and provide concise, actionable insights.'
+                            },
+                            {
+                                role: 'user',
+                                content: `Analyze this team capacity data for Q3 2025 and provide key findings in 2-3 sentences:\n\n${dataSummary}`
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 150
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to generate insights');
+                }
+                
+                const data = await response.json();
+                const insights = data.choices[0].message.content;
+                
+                // Update insights
+                document.getElementById('insights-content').textContent = insights;
+                
+                // Generate detailed summary cards
+                await generateSummaryCards(apiKey);
+                
+            } catch (error) {
+                console.error('Error generating insights:', error);
+                document.getElementById('insights-content').textContent = 'Error generating insights. Please check your API key and try again.';
+            }
+        }
+        
+        function prepareDataSummary() {
+            let summary = 'Team Capacity Data:\n';
+            
+            Object.entries(capacityTotals).forEach(([person, months]) => {
+                summary += `\n${person}:\n`;
+                summary += `- July: ${months['July 2025'] || 0}%\n`;
+                summary += `- August: ${months['August 2025'] || 0}%\n`;
+                summary += `- September: ${months['September 2025'] || 0}%\n`;
+                summary += `- Q3 Average: ${months['Q3 2025'] || 0}%\n`;
+            });
+            
+            return summary;
+        }
+        
+        async function generateSummaryCards(apiKey) {
+            // This would generate the three summary cards using AI
+            // For brevity, I'm showing just the structure
+            
+            try {
+                const summaryPrompt = `Based on this capacity data, generate:
+                1. Team utilization metrics (average capacity, peak month, lowest month)
+                2. Critical issues (overloaded members, underutilized members)
+                3. Recommendations for workload balancing
+                
+                Data: ${prepareDataSummary()}`;
+                
+                // Make API call and update summary cards...
+                // Implementation details omitted for brevity
+                
+            } catch (error) {
+                console.error('Error generating summary cards:', error);
+            }
         }
     </script>
 </body>

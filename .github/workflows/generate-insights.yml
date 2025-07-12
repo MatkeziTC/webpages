@@ -1,0 +1,83 @@
+name: Generate AI Insights
+
+on:
+  push:
+    paths:
+      - 'RICE.csv'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1' # Run weekly on Mondays
+
+jobs:
+  generate-insights:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install openai pandas
+    
+    - name: Generate insights
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python - <<EOF
+        import os
+        import json
+        import pandas as pd
+        import openai
+        
+        # Set up OpenAI
+        openai.api_key = os.environ['OPENAI_API_KEY']
+        
+        # Read CSV data
+        df = pd.read_csv('RICE.csv')
+        
+        # Process capacity data
+        capacity_summary = {}
+        for person in df['Person'].unique():
+            if pd.isna(person):
+                continue
+            person_data = df[df['Person'] == person]
+            capacity_summary[person] = {
+                'July': person_data['Effort July'].fillna('0%').str.rstrip('%').astype(float).sum(),
+                'August': person_data['Effort August'].fillna('0%').str.rstrip('%').astype(float).sum(),
+                'September': person_data['Effort September'].fillna('0%').str.rstrip('%').astype(float).sum()
+            }
+        
+        # Generate insights using OpenAI
+        prompt = f"Analyze this team capacity data and provide insights:\n{json.dumps(capacity_summary, indent=2)}"
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a project management analyst."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        
+        insights = {
+            "generated_at": pd.Timestamp.now().isoformat(),
+            "key_findings": response.choices[0].message.content,
+            "capacity_data": capacity_summary
+        }
+        
+        # Save insights
+        with open('insights.json', 'w') as f:
+            json.dump(insights, f, indent=2)
+        EOF
+    
+    - name: Commit insights
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add insights.json
+        git commit -m "Update AI-generated insights" || echo "No changes to commit"
+        git push 
