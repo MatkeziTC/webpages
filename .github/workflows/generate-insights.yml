@@ -4,7 +4,12 @@ on:
   push:
     paths:
       - 'RICE.csv'
-  workflow_dispatch:
+  workflow_dispatch:  # This allows manual triggering from GitHub Actions tab
+    inputs:
+      debug_mode:
+        description: 'Run in debug mode'
+        required: false
+        type: boolean
   schedule:
     - cron: '0 0 * * 1' # Run weekly on Mondays
 
