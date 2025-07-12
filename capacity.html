@@ -326,6 +326,21 @@
             font-weight: 600;
             margin-bottom: 8px;
         }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 1.2em;
+            color: #667eea;
+        }
 
         @media (max-width: 768px) {
             .view-selector {
@@ -346,6 +361,9 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div>Loading capacity data...</div>
+    </div>
     <div class="container">
         <h1>Team Capacity Heatmap</h1>
         <div class="subtitle">Q3 2025 - Fresh Data Analysis</div>
@@ -510,6 +528,7 @@
     <script>
         // Fresh project data from the latest CSV analysis
         let freshProjectData = {};
+        let dataLoaded = false;
 
         
         // --- CSV Data Loading & Heatmap Update Logic ---
@@ -526,13 +545,24 @@
         function loadDataFromCSV() {
             const csvPath = encodeURI('RICE 21e9c4d11f7a800db593ce0d559fe2fd_all.csv');
             fetch(csvPath)
-                .then(r => r.text())
+                .then(r => {
+                    if (!r.ok) {
+                        throw new Error(`HTTP error! status: ${r.status}`);
+                    }
+                    return r.text();
+                })
                 .then(text => {
                     const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
                     processCSVData(parsed.data);
                     updateHeatmapCells();
                 })
-                .catch(err => console.error('CSV load error:', err));
+                .catch(err => {
+                    console.error('CSV load error:', err);
+                    // Hide loading overlay
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    // Show error message to user
+                    alert('Error loading capacity data. Please refresh the page to try again.');
+                });
         }
 
         function processCSVData(rows) {
@@ -596,6 +626,12 @@
                 ['capacity-0','capacity-25','capacity-50','capacity-75','capacity-100'].forEach(cls => cell.classList.remove(cls));
                 cell.classList.add(getCapacityClass(total));
             });
+            
+            // Mark data as loaded
+            dataLoaded = true;
+            
+            // Hide loading overlay
+            document.getElementById('loading-overlay').style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', loadDataFromCSV);
@@ -608,6 +644,15 @@
             // Set modal title
             document.getElementById('drill-down-title').textContent = person;
             document.getElementById('drill-down-subtitle').textContent = period;
+            
+            // Check if data has been loaded yet
+            if (!freshProjectData[person] || !freshProjectData[person][period]) {
+                // Data not loaded yet, show loading message
+                document.getElementById('drill-down-projects').innerHTML = '<div class="project-detail"><div class="project-detail-name">Loading project data...</div><div class="project-detail-status">Please wait a moment and try again.</div></div>';
+                document.getElementById('drill-down-total').textContent = `Total Capacity: ${capacity}`;
+                document.getElementById('drill-down-modal').classList.remove('hidden');
+                return;
+            }
             
             // Get projects for this person and period
             const projects = freshProjectData[person][period] || [];
