@@ -1,0 +1,99 @@
+{
+  "generated_at": "2025-07-12T09:52:49.425447",
+  "key_findings": "Key Findings:\nThe team's average capacity utilization is extremely low for Q3 2025, with only one team member, Matko Zurak, showing significant capacity utilization. The majority of the team members, including Marko Kosovi\u0107, Antonio Jurki\u0107, Manuela Luki\u0107, Iva I\u0161tuk, Sven Vukeli\u0107, Josip Turi\u0107, Natko Gligori\u0107, Katarina Turkalj, Jack Templin, Luka Batarelo, Jakov Zub\u010di\u0107, Josip Gatjal, and Tihana Kov\u010de, are underutilized throughout the quarter.\n\nCritical Issues:\n1. Gross underutilization of team members: All team members, except Matko Zurak, show zero capacity utilization.\n2. Overloading of a single team member: Matko Zurak is overloaded in July and his capacity utilization drops significantly in September.\n\nSpecific Recommendations:\n1. Distribute workload evenly: Reallocate tasks from Matko Zurak to underutilized team members to ensure a more balanced distribution of workload.\n2. Increase project involvement: Engage underutilized team members in active projects or assign them new tasks to increase their capacity utilization.\n3. Regular monitoring and adjustment: Continuously monitor team capacity and make necessary adjustments to prevent both overload and underutilization.",
+  "capacity_data": {
+    "Matko Zurak": {
+      "July": 100.0,
+      "August": 85.0,
+      "September": 25.0
+    },
+    "Marko Kosovi\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Antonio Jurki\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Manuela Luki\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Iva I\u0161tuk": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Sven Vukeli\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Josip Turi\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Natko Gligori\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Katarina Turkalj": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Jack Templin": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Luka Batarelo": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Jakov Zub\u010di\u0107": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Josip Gatjal": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    },
+    "Tihana Kov\u010de": {
+      "July": 0.0,
+      "August": 0.0,
+      "September": 0.0
+    }
+  },
+  "team_statistics": {
+    "july_avg": 7.142857142857143,
+    "august_avg": 6.071428571428571,
+    "september_avg": 1.7857142857142858,
+    "overloaded": [
+      "Matko Zurak"
+    ],
+    "underutilized": [
+      "Marko Kosovi\u0107",
+      "Antonio Jurki\u0107",
+      "Manuela Luki\u0107",
+      "Iva I\u0161tuk",
+      "Sven Vukeli\u0107",
+      "Josip Turi\u0107",
+      "Natko Gligori\u0107",
+      "Katarina Turkalj",
+      "Jack Templin",
+      "Luka Batarelo",
+      "Jakov Zub\u010di\u0107",
+      "Josip Gatjal",
+      "Tihana Kov\u010de"
+    ]
+  }
+}
