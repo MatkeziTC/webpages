@@ -90,12 +90,6 @@
             border: 1px solid #ddd;
         }
 
-        .capacity-0 { background: #f8f9fa; }
-        .capacity-25 { background: #ffd43b; }
-        .capacity-50 { background: #fd7e14; }
-        .capacity-75 { background: #e03131; }
-        .capacity-100 { background: #c92a2a; }
-
         .heatmap-container {
             background: white;
             border-radius: 15px;
@@ -352,11 +346,11 @@
 <body>
     <div class="container">
         <h1>Team Capacity Heatmap</h1>
-        <div class="subtitle">Q3 2025 - Real Project Data</div>
+        <div class="subtitle">Q3 2025 - Fresh Data Analysis</div>
 
         <div class="alert">
-            <div class="alert-title">⚠️ Capacity Alert</div>
-            Matko is at 100% capacity in July (overloaded!). September shows significant capacity drop for most team members. Jack has no projects in August/September.
+            <div class="alert-title">⚠️ Key Findings</div>
+            Matko is at 100% capacity in July (overloaded). Jack has no projects assigned in August and September. Team capacity drops dramatically in September.
         </div>
 
         <div class="view-selector">
@@ -406,12 +400,12 @@
                 <div class="heatmap-cell capacity-0" data-person="Marko" data-period="September 2025" data-capacity="5%" onclick="showDrillDown(this)">5%</div>
                 
                 <div class="heatmap-name">Sven</div>
-                <div class="heatmap-cell capacity-50" data-person="Sven" data-period="July 2025" data-capacity="50%" onclick="showDrillDown(this)">50%</div>
+                <div class="heatmap-cell capacity-50" data-person="Sven" data-period="July 2025" data-capacity="55%" onclick="showDrillDown(this)">55%</div>
                 <div class="heatmap-cell capacity-25" data-person="Sven" data-period="August 2025" data-capacity="20%" onclick="showDrillDown(this)">20%</div>
                 <div class="heatmap-cell capacity-0" data-person="Sven" data-period="September 2025" data-capacity="5%" onclick="showDrillDown(this)">5%</div>
                 
                 <div class="heatmap-name">Jack</div>
-                <div class="heatmap-cell capacity-25" data-person="Jack" data-period="July 2025" data-capacity="30%" onclick="showDrillDown(this)">30%</div>
+                <div class="heatmap-cell capacity-25" data-person="Jack" data-period="July 2025" data-capacity="35%" onclick="showDrillDown(this)">35%</div>
                 <div class="heatmap-cell capacity-0" data-person="Jack" data-period="August 2025" data-capacity="0%" onclick="showDrillDown(this)">0%</div>
                 <div class="heatmap-cell capacity-0" data-person="Jack" data-period="September 2025" data-capacity="0%" onclick="showDrillDown(this)">0%</div>
             </div>
@@ -428,10 +422,10 @@
                 <div class="heatmap-cell capacity-25" data-person="Marko" data-period="Q3 2025" data-capacity="28%" onclick="showDrillDown(this)">28%</div>
                 
                 <div class="heatmap-name">Sven</div>
-                <div class="heatmap-cell capacity-25" data-person="Sven" data-period="Q3 2025" data-capacity="25%" onclick="showDrillDown(this)">25%</div>
+                <div class="heatmap-cell capacity-25" data-person="Sven" data-period="Q3 2025" data-capacity="27%" onclick="showDrillDown(this)">27%</div>
                 
                 <div class="heatmap-name">Jack</div>
-                <div class="heatmap-cell capacity-25" data-person="Jack" data-period="Q3 2025" data-capacity="10%" onclick="showDrillDown(this)">10%</div>
+                <div class="heatmap-cell capacity-25" data-person="Jack" data-period="Q3 2025" data-capacity="12%" onclick="showDrillDown(this)">12%</div>
             </div>
         </div>
 
@@ -453,24 +447,24 @@
                 <h3>📊 Team Utilization</h3>
                 <div class="summary-item">
                     <span>Average Team Capacity</span>
-                    <span><strong>33%</strong></span>
+                    <span><strong>34%</strong></span>
                 </div>
                 <div class="summary-item">
                     <span>Peak Month</span>
-                    <span><strong>July (60%)</strong></span>
+                    <span><strong>July (63%)</strong></span>
                 </div>
                 <div class="summary-item">
                     <span>Lowest Month</span>
                     <span><strong>September (9%)</strong></span>
                 </div>
                 <div class="summary-item">
-                    <span>Overloaded (100%+)</span>
+                    <span>Overloaded (100%)</span>
                     <span style="color: #e03131;"><strong>Matko in July</strong></span>
                 </div>
             </div>
 
             <div class="summary-card">
-                <h3>⚠️ Capacity Issues</h3>
+                <h3>⚠️ Critical Issues</h3>
                 <div class="summary-item">
                     <span>Matko July - Overloaded</span>
                     <span style="color: #e03131;"><strong>100%</strong></span>
@@ -481,22 +475,22 @@
                 </div>
                 <div class="summary-item">
                     <span>September team drop</span>
-                    <span style="color: #ffc107;"><strong>-22%</strong></span>
+                    <span style="color: #ffc107;"><strong>-54%</strong></span>
                 </div>
                 <div class="summary-item">
-                    <span>Total Projects</span>
-                    <span><strong>210 projects</strong></span>
+                    <span>Capacity Imbalance</span>
+                    <span style="color: #ffc107;"><strong>High</strong></span>
                 </div>
             </div>
 
             <div class="summary-card">
                 <h3>💡 Recommendations</h3>
                 <div class="summary-item">
-                    <span>Reduce Matko's July load</span>
+                    <span>Redistribute Matko's July load</span>
                     <span style="color: #e03131;">!</span>
                 </div>
                 <div class="summary-item">
-                    <span>Assign Jack projects Aug/Sep</span>
+                    <span>Assign Jack Aug/Sep projects</span>
                     <span style="color: #28a745;">✓</span>
                 </div>
                 <div class="summary-item">
@@ -504,7 +498,7 @@
                     <span style="color: #ffc107;">!</span>
                 </div>
                 <div class="summary-item">
-                    <span>Better distribute collaborations</span>
+                    <span>Balance team workload</span>
                     <span style="color: #28a745;">✓</span>
                 </div>
             </div>
@@ -512,16 +506,19 @@
     </div>
 
     <script>
-        // Real project data from CSV (accurate statuses and roles)
-        const realProjectData = {
+        // Fresh project data from the latest CSV analysis
+        const freshProjectData = {
             "Matko": {
                 "July 2025": [
                     { name: "North Stars Alignment", capacity: "25%", status: "Ongoing", role: "Owner", collaborators: null },
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "20%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Stop the drowning in the WIP", capacity: "10%", status: "To do", role: "Owner", collaborators: null },
-                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Marko Kosović,Matko Zurak", owner: "Marko Kosović" },
-                    { name: "60 total projects", capacity: "100%", status: "19 as Owner, 41 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Stop the drowning in the WIP across leadership", capacity: "10%", status: "In progress", role: "Owner", collaborators: null },
+                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Owner", collaborators: null },
+                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
+                    { name: "Collaborate with OSTE on PR Workflow Initiative", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" },
+                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" },
+                    { name: "Cro→Eng Translation Infra", capacity: "5%", status: "In progress", role: "Owner", collaborators: null }
                 ],
                 "August 2025": [
                     { name: "PTO (Personal Time Off)", capacity: "50%", status: "Backlog", role: "Owner", collaborators: null },
@@ -531,68 +528,66 @@
                 ],
                 "September 2025": [
                     { name: "North Stars Alignment", capacity: "20%", status: "Ongoing", role: "Owner", collaborators: null },
-                    { name: "Data Monitoring", capacity: "5%", status: "To do", role: "Collaborator", collaborators: "Marko Kosović,Matko Zurak", owner: "Marko Kosović" }
+                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
                 ],
                 "Q3 2025": [
                     { name: "North Stars Alignment", capacity: "20%", status: "Ongoing", role: "Owner", collaborators: null },
                     { name: "PTO (Personal Time Off)", capacity: "17%", status: "Backlog", role: "Owner", collaborators: null },
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Scope OSTE prospects", capacity: "7%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
-                    { name: "60 total projects", capacity: "70%", status: "19 as Owner, 41 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Owner", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić" },
+                    { name: "Stop the drowning in the WIP", capacity: "3%", status: "In progress", role: "Owner", collaborators: null }
                 ]
             },
             "Marko": {
                 "July 2025": [
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "20%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Matko Zurak,Sven Vukelić" },
-                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Owner", collaborators: "Marko Kosović,Matko Zurak" },
-                    { name: "Migrate Days Off approval system", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Matko Zurak" },
-                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Matko Zurak" },
-                    { name: "64 total projects", capacity: "60%", status: "26 as Owner, 38 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: null, owner: "Matko Zurak" },
+                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Collaborate with OSTE on PR Workflow Initiative", capacity: "5%", status: "In progress", role: "Owner", collaborators: "Multiple" },
+                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Owner", collaborators: "Multiple" }
                 ],
                 "August 2025": [
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Matko Zurak,Sven Vukelić" },
-                    { name: "Data Monitoring", capacity: "5%", status: "To do", role: "Owner", collaborators: "Marko Kosović,Matko Zurak" }
+                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Owner", collaborators: "Multiple team leads" }
                 ],
                 "September 2025": [
-                    { name: "Data Monitoring", capacity: "5%", status: "To do", role: "Owner", collaborators: "Marko Kosović,Matko Zurak" }
+                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Owner", collaborators: "Multiple team leads" }
                 ],
                 "Q3 2025": [
-                    { name: "Scope OSTE prospects", capacity: "7%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Owner", collaborators: "Matko Zurak,Sven Vukelić" },
-                    { name: "Automate Meetings", capacity: "3%", status: "In progress", role: "Owner", collaborators: "Marko Kosović,Matko Zurak" },
-                    { name: "Data Monitoring", capacity: "3%", status: "To do", role: "Owner", collaborators: "Marko Kosović,Matko Zurak" },
-                    { name: "64 total projects", capacity: "28%", status: "26 as Owner, 38 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Lead Team Leads for '25", capacity: "3%", status: "Ongoing", role: "Owner", collaborators: "Multiple team leads" }
                 ]
             },
             "Sven": {
                 "July 2025": [
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "20%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
+                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Collaborate with OSTE on PR Workflow Initiative", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" },
                     { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" },
-                    { name: "Automate Meetings", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Marko Kosović,Matko Zurak", owner: "Marko Kosović" },
-                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Matko Zurak" },
-                    { name: "67 total projects", capacity: "50%", status: "16 as Owner, 51 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Thoughtcap website 1.0", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Multiple", owner: "Marko Kosović" }
                 ],
                 "August 2025": [
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
                     { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
                 ],
                 "September 2025": [
-                    { name: "Data Monitoring", capacity: "5%", status: "To do", role: "Collaborator", collaborators: "Marko Kosović,Matko Zurak", owner: "Marko Kosović" }
+                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
                 ],
                 "Q3 2025": [
-                    { name: "Scope OSTE prospects", capacity: "7%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
                     { name: "OSTE e2e Testing", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Matko Zurak,Sven Vukelić", owner: "Marko Kosović" },
-                    { name: "Lead Team Leads for '25", capacity: "3%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" },
-                    { name: "67 total projects", capacity: "25%", status: "16 as Owner, 51 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "3%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" }
                 ]
             },
             "Jack": {
                 "July 2025": [
-                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "20%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Automate Meetings", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Marko Kosović,Matko Zurak", owner: "Marko Kosović" },
-                    { name: "19 total projects", capacity: "30%", status: "5 as Owner, 14 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "15%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "10%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Automate Meetings", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: null, owner: "Matko Zurak" },
+                    { name: "Lead Team Leads for '25", capacity: "5%", status: "Ongoing", role: "Collaborator", collaborators: "Multiple team leads", owner: "Marko Kosović" }
                 ],
                 "August 2025": [
                     { name: "No active projects", capacity: "0%", status: "Available", role: "Available", collaborators: null }
@@ -601,9 +596,8 @@
                     { name: "No active projects", capacity: "0%", status: "Available", role: "Available", collaborators: null }
                 ],
                 "Q3 2025": [
-                    { name: "Scope OSTE prospects", capacity: "7%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
-                    { name: "Automate Meetings", capacity: "3%", status: "In progress", role: "Collaborator", collaborators: "Marko Kosović,Matko Zurak", owner: "Marko Kosović" },
-                    { name: "19 total projects", capacity: "10%", status: "5 as Owner, 14 as Collaborator", role: "Mixed", collaborators: "" }
+                    { name: "Initiate Partner Based Biz Dev Practice at TC", capacity: "5%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" },
+                    { name: "Scope OSTE prospects for Q3 & Q4", capacity: "3%", status: "In progress", role: "Collaborator", collaborators: "Jack Templin,Marko Kosović,Sven Vukelić", owner: "Matko Zurak" }
                 ]
             }
         };
@@ -618,15 +612,15 @@
             document.getElementById('drill-down-subtitle').textContent = period;
             
             // Get projects for this person and period
-            const projects = realProjectData[person][period] || [];
+            const projects = freshProjectData[person][period] || [];
             
-            // Build projects HTML
+            // Build projects HTML - show all projects
             let projectsHTML = '';
             if (projects.length === 0) {
                 projectsHTML = '<div class="project-detail"><div class="project-detail-name">No projects assigned</div><div class="project-detail-status">Available for new projects</div></div>';
             } else {
-                projects.forEach(project => {
-                    const roleColor = project.role === 'Owner' ? '#667eea' : '#28a745';
+                projects.forEach((project, index) => {
+                    const roleColor = project.role === 'Owner' ? '#667eea' : project.role === 'Collaborator' ? '#28a745' : '#6c757d';
                     const ownerText = project.role === 'Collaborator' && project.owner ? `<div class="project-detail-collaborators">Owner: ${project.owner}</div>` : '';
                     
                     projectsHTML += `
@@ -637,7 +631,7 @@
                                 <span style="color: ${roleColor}; font-weight: bold;">${project.role}</span> • Status: ${project.status}
                             </div>
                             ${ownerText}
-                            ${project.collaborators ? `<div class="project-detail-collaborators">Collaborators: ${project.collaborators}</div>` : ''}
+                            ${project.collaborators && project.collaborators !== 'null' && project.collaborators !== 'Multiple' ? `<div class="project-detail-collaborators">Collaborators: ${project.collaborators}</div>` : ''}
                         </div>
                     `;
                 });
