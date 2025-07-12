@@ -511,7 +511,7 @@
         // Fresh project data from the latest CSV analysis
         let freshProjectData = {};
 
-        
+
         // --- CSV Data Loading & Heatmap Update Logic ---
         const capacityTotals = {};
 
@@ -536,7 +536,7 @@
         }
 
         function processCSVData(rows) {
-            const months = ['July 2025', 'August 2025', 'September 2025'];
+            const months = ['Effort July', 'Effort August', 'Effort September'];
             rows.forEach(row => {
                 const person = (row['Person'] || '').trim();
                 if (!person) return;
