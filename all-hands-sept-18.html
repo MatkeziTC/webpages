@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thoughtcap: The AI-First Transformation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #e2e8f0;
+        }
+
+        h3 {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+
+        .subtitle {
+            font-size: clamp(20px, 2.5vw, 32px);
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        .big-quote {
+            font-size: clamp(32px, 4vw, 56px);
+            font-weight: 700;
+            text-align: center;
+            color: #f1f5f9;
+            line-height: 1.3;
+            max-width: 1000px;
+            margin: 40px auto;
+            position: relative;
+            padding: 0 40px;
+        }
+
+        .big-quote::before {
+            content: '"';
+            position: absolute;
+            left: -20px;
+            top: -20px;
+            font-size: 120px;
+            color: #667eea;
+            opacity: 0.3;
+        }
+
+        .pillars {
+            display: flex;
+            gap: 40px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        .pillar {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .pillar:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .pillar-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .pillar-text {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .reality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .reality-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #f59e0b;
+            padding: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .reality-card p {
+            font-size: 22px;
+            line-height: 1.5;
+            color: #f1f5f9;
+        }
+
+        .spectrum-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 60px auto;
+        }
+
+        .spectrum {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .spectrum-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .spectrum-item {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            flex: 1;
+        }
+
+        .spectrum-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid #0a0e27;
+            transition: transform 0.3s;
+        }
+
+        .spectrum-item:hover .spectrum-dot {
+            transform: scale(1.3);
+        }
+
+        .spectrum-item:nth-child(1) .spectrum-dot {
+            background: #ef4444;
+        }
+
+        .spectrum-item:nth-child(2) .spectrum-dot {
+            background: #f59e0b;
+        }
+
+        .spectrum-item:nth-child(3) .spectrum-dot {
+            background: #10b981;
+        }
+
+        .spectrum-label {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .spectrum-desc {
+            font-size: 16px;
+            color: #94a3b8;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 60px auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .timeline-date {
+            min-width: 200px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .timeline-content h4 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #f1f5f9;
+        }
+
+        .timeline-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        .proof-points {
+            display: grid;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .proof-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            font-size: 20px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .proof-card::before {
+            content: "✓";
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            font-size: 30px;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .story-section {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .story-title {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .story-content {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #e2e8f0;
+            font-style: italic;
+        }
+
+        .choice-paths {
+            display: flex;
+            gap: 60px;
+            margin: 60px auto;
+            max-width: 1200px;
+            align-items: stretch;
+        }
+
+        .path {
+            flex: 1;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .path-old {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .path-new {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .path-icon {
+            font-size: 72px;
+            margin-bottom: 30px;
+        }
+
+        .path h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .path-old h3 {
+            color: #ef4444;
+        }
+
+        .path-new h3 {
+            color: #10b981;
+        }
+
+        .path ul {
+            list-style: none;
+            text-align: left;
+            font-size: 18px;
+            line-height: 2;
+            color: #cbd5e1;
+        }
+
+        .path ul li::before {
+            margin-right: 10px;
+        }
+
+        .path-old ul li::before {
+            content: "✗";
+            color: #ef4444;
+        }
+
+        .path-new ul li::before {
+            content: "✓";
+            color: #10b981;
+        }
+
+        .key-phrases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+
+        .phrase-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #f1f5f9;
+            border: 2px solid rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .phrase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .closing-message {
+            max-width: 1000px;
+            margin: 60px auto;
+            text-align: center;
+            font-size: clamp(24px, 3vw, 36px);
+            line-height: 1.8;
+            color: #f1f5f9;
+            font-weight: 300;
+        }
+
+        .closing-message strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .train-visual {
+            font-size: 100px;
+            margin: 40px 0;
+            animation: moveTrain 3s ease-in-out infinite;
+        }
+
+        @keyframes moveTrain {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(30px);
+            }
+        }
+
+        .empty-station {
+            font-size: 100px;
+            opacity: 0.3;
+            margin: 40px 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            margin: 40px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .team-structure {
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .team-change {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .team-change h4 {
+            font-size: 22px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .team-change p {
+            font-size: 18px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .pillars, .choice-paths {
+                flex-direction: column;
+            }
+            
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .timeline-date {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide">
+        <span class="slide-number">1 / 15</span>
+        <h1>The AI-First Transformation</h1>
+        <p class="subtitle">Thoughtcap All-Hands Meeting</p>
+        <div class="train-visual">🚂</div>
+        <p class="big-quote">The train has left the station</p>
+    </div>
+
+    <!-- Slide 2: Opening Hook -->
+    <div class="slide">
+        <span class="slide-number">2 / 15</span>
+        <h2>The Unexpected Truth</h2>
+        <div class="big-quote">By March 2026, our biggest client relationship as you know it will be gone.</div>
+        <div style="margin: 60px 0;">
+            <p style="font-size: 36px; color: #ef4444; margin-bottom: 30px;">This isn't a failure—</p>
+            <p style="font-size: 48px; color: #10b981; font-weight: 700;">It's our liberation.</p>
+        </div>
+    </div>
+
+    <!-- Slide 3: Core Message -->
+    <div class="slide">
+        <span class="slide-number">3 / 15</span>
+        <h2>One Simple Truth</h2>
+        <div class="big-quote">We're becoming an AI-first company, not a traditional services provider</div>
+        <div class="pillars">
+            <div class="pillar">
+                <div class="pillar-number">1</div>
+                <div class="pillar-text">Traditional digital services market is dying</div>
+            </div>
+            <div class="pillar">
+                <div class="pillar-number">2</div>
+                <div class="pillar-text">We're building AI-native capabilities</div>
+            </div>
+            <div class="pillar">
+                <div class="pillar-number">3</div>
+                <div class="pillar-text">Everyone who wishes to be part of the future must board this train</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Reality Checks -->
+    <div class="slide">
+        <span class="slide-number">4 / 15</span>
+        <h2>The Reality Check</h2>
+        <p class="subtitle">Hard truths we need to face</p>
+        <div class="reality-grid">
+            <div class="reality-card">
+                <p><strong>80%</strong> of the company don't have the skills we need for our future—yet</p>
+            </div>
+            <div class="reality-card">
+                <p>We're hiring externally because the work has <strong>fundamentally changed</strong></p>
+            </div>
+            <div class="reality-card">
+                <p>There is <strong>no playbook</strong> for where we're going</p>
+            </div>
+            <div class="reality-card">
+                <p>This transformation will be <strong>messy by design</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: The Journey Visual -->
+    <div class="slide">
+        <span class="slide-number">5 / 15</span>
+        <h2>Where We Are Going</h2>
+        <div class="empty-station">🚉</div>
+        <p style="font-size: 24px; color: #94a3b8; margin-bottom: 60px;">Traditional services: An empty station</p>
+        
+        <div class="spectrum-container">
+            <div class="spectrum">
+                <div class="spectrum-line"></div>
+                <div class="spectrum-item">
+                    <div class="spectrum-dot"></div>
+                    <div class="spectrum-label">Traditional</div>
+                    <div class="spectrum-desc">Where we were</div>
+                </div>
+                <div class="spectrum-item">
+                    <div class="spectrum-dot"></div>
+                    <div class="spectrum-label">Amplified</div>
+                    <div class="spectrum-desc">Where we are</div>
+                </div>
+                <div class="spectrum-item">
+                    <div class="spectrum-dot"></div>
+                    <div class="spectrum-label">Native</div>
+                    <div class="spectrum-desc">Where we're going</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Concrete Changes - Team Structure -->
+    <div class="slide">
+        <span class="slide-number">6 / 15</span>
+        <h2>Team Structure Evolution</h2>
+        <div class="team-structure">
+            <div class="team-change">
+                <h4>Leadership Realignment</h4>
+                <p>• Sven Leading OSTA DU & OSTE DU delivery (Asset Care, Reprocessing, Imaging/Connector)<br>
+                • Matko Leading OSTE delivery (Endobase, Hytrack, E2E Automation)</p>
+            </div>
+            <div class="team-change">
+                <h4>Organizational Changes</h4>
+                <p>• Tech lead roles eliminated, "point men" for initiatives<br>
+                • Team leads will more directly influence compensation decisions<br>
+                • Reshuffling of teams, starting from insights</p>
+            </div>
+            <div class="team-change">
+                <h4>Project Focus</h4>
+                <p>• E2E Unit tests with AI<br>
+                • Endobase modernization<br>
+                • Hytrack modernization<br>
+                • Imaging Solution to follow</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Timeline -->
+    <div class="slide">
+        <span class="slide-number">7 / 15</span>
+        <h2>The Transformation Timeline</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">NOW</div>
+                <div class="timeline-content">
+                    <h4>Immediate Changes</h4>
+                    <p>Team restructuring begins. AI-first projects accelerating.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">3-6 Months</div>
+                <div class="timeline-content">
+                    <h4>Role Clarity</h4>
+                    <p>Clear expectations, upskilling opportunities, performance evaluation.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">March 2026</div>
+                <div class="timeline-content">
+                    <h4>Full Transformation</h4>
+                    <p>Complete shift from OSTA DU to OSTE. AI-native company.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Proof Points -->
+    <div class="slide">
+        <span class="slide-number">8 / 15</span>
+        <h2>We're Already Succeeding</h2>
+        <p class="subtitle">The transformation is happening now</p>
+        <div class="proof-points">
+            <div class="proof-card">
+                E2E Unit tests just achieved a milestone with AI-generated tests for Hytrack
+            </div>
+            <div class="proof-card">
+                We already have a stronghold in OSTE through Reprocessing, E2E Unit tests, Endobase, Hytrack
+            </div>
+            <div class="proof-card">
+                The market for traditional software services is shrinking—we're ahead of the curve
+            </div>
+            <div class="proof-card">
+                Olympus's own strategy is shifting—we're positioning ourselves for the future
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Transformation Story -->
+    <div class="slide">
+        <span class="slide-number">9 / 15</span>
+        <h2>Our Transformation Story</h2>
+        <div class="story-section">
+            <div class="story-title">One Year Ago vs. Today vs. Tomorrow</div>
+            <div class="story-content">
+                "A year ago, we were a traditional services company tied to one major client. Today, we're generating AI unit tests, modernizing legacy systems with AI, and saying 'no' to traditional work. By next year, we'll be the company others come to learn from."
+            </div>
+        </div>
+        <div class="story-section">
+            <div class="story-title">Individual Success Story</div>
+            <div class="story-content">
+                "Take our E2E efforts with OSTE led by Marko—they went from manual testing to AI-generated tests in weeks. They didn't wait for permission or perfect conditions. They just started experimenting."
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: The Choice -->
+    <div class="slide">
+        <span class="slide-number">10 / 15</span>
+        <h2>Two Paths Diverged</h2>
+        <div class="choice-paths">
+            <div class="path path-old">
+                <div>
+                    <div class="path-icon">🚶‍♂️</div>
+                    <h3>The Old Path</h3>
+                </div>
+                <ul>
+                    <li>Slowly fading away</li>
+                    <li>Traditional work</li>
+                    <li>Less money</li>
+                    <li>Less relevance</li>
+                    <li>Obsolescence for firm and engineers</li>
+                </ul>
+            </div>
+            <div class="path path-new">
+                <div>
+                    <div class="path-icon">🚀</div>
+                    <h3>The New Path</h3>
+                </div>
+                <ul>
+                    <li>Messy but exciting</li>
+                    <li>AI-native work</li>
+                    <li>Market leadership</li>
+                    <li>Essential skills</li>
+                    <li>Future-proof careers</li>
+                </ul>
+            </div>
+        </div>
+        <p class="big-quote" style="margin-top: 60px;">We've chosen our path. Now you choose yours.</p>
+    </div>
+
+    <!-- Slide 11: Support & Development -->
+    <div class="slide">
+        <span class="slide-number">11 / 15</span>
+        <h2>We're In This Together</h2>
+        <div class="team-structure">
+            <div class="team-change">
+                <h4>Upskilling Opportunities</h4>
+                <p>Strategic upskilling projects and ongoing client projects will serve as platforms for developing required AI skills</p>
+            </div>
+            <div class="team-change">
+                <h4>Support System</h4>
+                <p>3-6 months to become the expert the industry needs, with mentorship and resources</p>
+            </div>
+            <div class="team-change">
+                <h4>Honest Commitment</h4>
+                <p>We don't have all the answers, but we're committed to finding them together</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Key Messages -->
+    <div class="slide">
+        <span class="slide-number">12 / 15</span>
+        <h2>Remember These Truths</h2>
+        <div class="key-phrases">
+            <div class="phrase-card">The train has left the station</div>
+            <div class="phrase-card">AI-first, not AI-maybe</div>
+            <div class="phrase-card">Messy by design</div>
+            <div class="phrase-card">No playbook—we're writing it</div>
+            <div class="phrase-card">Transform or become obsolete</div>
+        </div>
+    </div>
+
+    <!-- Slide 13: The Burning Platform -->
+    <div class="slide">
+        <span class="slide-number">13 / 15</span>
+        <h2>Why This Matters NOW</h2>
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <div class="big-quote" style="color: #ef4444; margin-bottom: 60px;">
+                Traditional agencies are dying
+            </div>
+            <div class="big-quote" style="color: #f59e0b; margin-bottom: 60px;">
+                We refuse to be one of them
+            </div>
+            <div class="big-quote" style="color: #10b981;">
+                This is your chance to be part of the AI revolution, not a victim of it
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Closing -->
+    <div class="slide">
+        <span class="slide-number">14 / 15</span>
+        <h2>The Time Is NOW</h2>
+        <div class="closing-message">
+            <p>We're making the <strong>painful shift</strong> toward being an AI-first company.</p>
+            <p style="margin: 40px 0;">It'll take months, maybe even <strong>years</strong> to fully embrace this new way of working.</p>
+            <p style="margin: 40px 0;">But we will <strong>relentlessly keep pushing</strong> for it.</p>
+            <p style="font-size: 42px; margin-top: 60px; font-weight: 700; color: #ef4444;">Because the alternative isn't slower growth—<br><strong>it's extinction.</strong></p>
+        </div>
+    </div>
+
+    <!-- Slide 15: Discussion -->
+    <div class="slide">
+        <span class="slide-number">15 / 15</span>
+        <h2>Open Discussion</h2>
+        <p class="subtitle">Your feedback is essential</p>
+        <div style="text-align: center; max-width: 800px; margin: 60px auto;">
+            <p style="font-size: 28px; line-height: 1.8; color: #e2e8f0; margin-bottom: 40px;">
+                The only way forward is together.<br>
+                Let's discuss openly.
+            </p>
+            <div class="cta-button">AI-first isn't our future—it's our present</div>
+        </div>
+        <div class="train-visual" style="font-size: 150px; margin-top: 60px;">🚄</div>
+    </div>
+
+    <script>
+        // Add smooth scrolling between slides
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                const slides = document.querySelectorAll('.slide');
+                const currentSlide = Math.floor(window.scrollY / window.innerHeight);
+                if (currentSlide < slides.length - 1) {
+                    slides[currentSlide + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const slides = document.querySelectorAll('.slide');
+                const currentSlide = Math.floor(window.scrollY / window.innerHeight);
+                if (currentSlide > 0) {
+                    slides[currentSlide - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+
+        // Add entrance animations as slides come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            observer.observe(slide);
+        });
+    </script>
+</body>
+</html>
