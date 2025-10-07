@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Capacity Allocation - Sept to Dec 2025</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        .person-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .person-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        .chart-container {
+            display: flex;
+            gap: 10px;
+            height: 300px;
+            align-items: flex-end;
+            margin-top: 10px;
+            padding: 10px 0;
+        }
+        .month-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .bar-container {
+            width: 100%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fafafa;
+            position: relative;
+        }
+        .bar-segment {
+            width: 100%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .bar-segment:hover {
+            opacity: 0.85;
+        }
+        .month-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            margin-top: 5px;
+        }
+        .total-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .legend {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        .overallocated {
+            border: 2px solid #ff4444 !important;
+        }
+        .allocation-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .badge-over {
+            background: #ff4444;
+            color: white;
+        }
+        .badge-full {
+            background: #44aa44;
+            color: white;
+        }
+        .badge-under {
+            background: #ffaa44;
+            color: white;
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const CAPACITY_DATA = {
+  "Josip Turić": {
+    "totals": {
+      "Sept": 100.0,
+      "Oct": 100.0,
+      "Nov": 0.0,
+      "Dec": 0.0
+    },
+    "projects": {
+      "Sept": [
+        {
+          "project": "Asset Care",
+          "function": "Team Leadership",
+          "value": 100.0
+        }
+      ],
+      "Oct": [
+        {
+          "project": "Asset Care",
+          "function": "Team Leadership",
+          "value": 100.0
+        }
+      ],
+      "Nov": [],
+      "Dec": []
+    }
+  },
+  "Matko Zurak": {
+    "totals": {
+      "Sept": 30.0,
+      "Oct": 40.0,
+      "Nov": 30.0,
+      "Dec": 30.0
+    },
+    "projects": {
+      "Sept": [
+        {
+          "project": "Endobase",
+          "function": "Executive Oversight",
+          "value": 30.0
+        }
+      ],
+      "Oct": [
+        {
+          "project": "Endobase",
+          "function": "Executive Oversight",
+          "value": 30.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Executive Oversight",
+          "value": 10.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Endobase",
+          "function": "Executive Oversight",
+          "value": 20.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Executive Oversight",
+          "value": 10.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Endobase",
+          "function": "Executive Oversight",
+          "value": 20.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Executive Oversight",
+          "value": 10.0
+        }
+      ]
+    }
+  },
+  "Manuela Lukić": {
+    "totals": {
+      "Sept": 200.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [
+        {
+          "project": "Endobase",
+          "function": "Team Leadership",
+          "value": 100.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 100.0
+        }
+      ],
+      "Oct": [
+        {
+          "project": "Endobase",
+          "function": "Team Leadership",
+          "value": 40.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 60.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Endobase",
+          "function": "Team Leadership",
+          "value": 60.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 40.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Endobase",
+          "function": "Team Leadership",
+          "value": 60.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 40.0
+        }
+      ]
+    }
+  },
+  "Josip Gatjal": {
+    "totals": {
+      "Sept": 190.0,
+      "Oct": 110.0,
+      "Nov": 120.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 80.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Planning",
+          "value": 20.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Infrastructure",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Backend SWE",
+          "value": 70.0
+        }
+      ],
+      "Oct": [
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Planning",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Infrastructure",
+          "value": 20.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Backend SWE",
+          "value": 60.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Planning",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Infrastructure",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Backend SWE",
+          "value": 80.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Planning",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Backend SWE",
+          "value": 80.0
+        }
+      ]
+    }
+  },
+  "Antonio Jurkić": {
+    "totals": {
+      "Sept": 100.0,
+      "Oct": 100.0,
+      "Nov": 80.0,
+      "Dec": 70.0
+    },
+    "projects": {
+      "Sept": [
+        {
+          "project": "Hytrack",
+          "function": "Frontend SWE",
+          "value": 70.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Team Leadership",
+          "value": 10.0
+        }
+      ],
+      "Oct": [
+        {
+          "project": "Hytrack",
+          "function": "Frontend SWE",
+          "value": 30.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 30.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 20.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Team Leadership",
+          "value": 20.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Hytrack",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 20.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 30.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Team Leadership",
+          "value": 20.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Hytrack",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Endobase",
+          "function": "Frontend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Backend SWE",
+          "value": 30.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "Team Leadership",
+          "value": 20.0
+        }
+      ]
+    }
+  },
+  "Luka Ušalj": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 40.0,
+      "Nov": 100.0,
+      "Dec": 0.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Hytrack",
+          "function": "Frontend SWE",
+          "value": 40.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Hytrack",
+          "function": "Frontend SWE",
+          "value": 80.0
+        },
+        {
+          "project": "Hytrack",
+          "function": "AI Engineering",
+          "value": 20.0
+        }
+      ],
+      "Dec": []
+    }
+  },
+  "Ana Zrinušić": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Endobase",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Endobase",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Endobase",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ]
+    }
+  },
+  "Filip Gjurin": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 0.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [],
+      "Nov": [
+        {
+          "project": "Hytrack",
+          "function": "Product Design",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Hytrack",
+          "function": "Product Design",
+          "value": 100.0
+        }
+      ]
+    }
+  },
+  "Tihana Kovče": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Reprocessing",
+          "function": "Team Leadership",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Reprocessing",
+          "function": "Team Leadership",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Reprocessing",
+          "function": "Team Leadership",
+          "value": 100.0
+        }
+      ]
+    }
+  },
+  "Roko Marušić": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Reprocessing",
+          "function": "Backend SWE",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Reprocessing",
+          "function": "Backend SWE",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Reprocessing",
+          "function": "Backend SWE",
+          "value": 100.0
+        }
+      ]
+    }
+  },
+  "Mislav Staržik": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Reprocessing",
+          "function": "Backend SWE",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Reprocessing",
+          "function": "Backend SWE",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Reprocessing",
+          "function": "Backend SWE",
+          "value": 100.0
+        }
+      ]
+    }
+  },
+  "Jakov Zubčić": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 95.0,
+      "Dec": 85.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Connector",
+          "function": "Team Leadership",
+          "value": 15.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Team Leadership",
+          "value": 60.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 25.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Connector",
+          "function": "Team Leadership",
+          "value": 10.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Team Leadership",
+          "value": 70.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 15.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Connector",
+          "function": "Team Leadership",
+          "value": 10.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Team Leadership",
+          "value": 60.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 15.0
+        }
+      ]
+    }
+  },
+  "Marin Ćubela": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 90.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 85.0
+        },
+        {
+          "project": "Connector",
+          "function": "Backend SWE",
+          "value": 15.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 90.0
+        },
+        {
+          "project": "Connector",
+          "function": "Backend SWE",
+          "value": 10.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 80.0
+        },
+        {
+          "project": "Connector",
+          "function": "Backend SWE",
+          "value": 10.0
+        }
+      ]
+    }
+  },
+  "Marko Klobučar Ledinšćak": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 90.0,
+      "Nov": 90.0,
+      "Dec": 90.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Connector",
+          "function": "Backend SWE",
+          "value": 10.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 80.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 90.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 90.0
+        }
+      ]
+    }
+  },
+  "Ivan Mihaljek": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 80.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 80.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Frontend SWE",
+          "value": 20.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 80.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Frontend SWE",
+          "value": 20.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Backend SWE",
+          "value": 70.0
+        },
+        {
+          "project": "Imaging Solutions",
+          "function": "Frontend SWE",
+          "value": 10.0
+        }
+      ]
+    }
+  },
+  "Iva Ištuk": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 80.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Frontend SWE",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Frontend SWE",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Imaging Solutions",
+          "function": "Frontend SWE",
+          "value": 80.0
+        }
+      ]
+    }
+  },
+  "Natko Gligorić": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Asset Care",
+          "function": "QA Engineering",
+          "value": 50.0
+        },
+        {
+          "project": "Insights",
+          "function": "QA Engineering",
+          "value": 20.0
+        },
+        {
+          "project": "E2E UT Automation",
+          "function": "QA Engineering",
+          "value": 30.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Asset Care",
+          "function": "QA Engineering",
+          "value": 40.0
+        },
+        {
+          "project": "E2E UT Automation",
+          "function": "QA Engineering",
+          "value": 60.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Asset Care",
+          "function": "QA Engineering",
+          "value": 40.0
+        },
+        {
+          "project": "E2E UT Automation",
+          "function": "QA Engineering",
+          "value": 60.0
+        }
+      ]
+    }
+  },
+  "Andrija Krmpotić": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Imaging Solutions",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Imaging Solutions",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Imaging Solutions",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ]
+    }
+  },
+  "Dominik Jozinović": {
+    "totals": {
+      "Sept": 0.0,
+      "Oct": 100.0,
+      "Nov": 100.0,
+      "Dec": 100.0
+    },
+    "projects": {
+      "Sept": [],
+      "Oct": [
+        {
+          "project": "Asset Care",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ],
+      "Nov": [
+        {
+          "project": "Asset Care",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ],
+      "Dec": [
+        {
+          "project": "Asset Care",
+          "function": "QA Engineering",
+          "value": 100.0
+        }
+      ]
+    }
+  }
+};
+
+        // Color palette for different projects
+        const PROJECT_COLORS = {
+            'Asset Care': '#3b82f6',
+            'Endobase': '#8b5cf6',
+            'Hytrack': '#ec4899',
+            'Reprocessing': '#f59e0b',
+            'Imaging Solutions': '#10b981',
+            'Connector': '#06b6d4',
+            'E2E UT Automation': '#6366f1',
+            'Insights': '#14b8a6',
+            'QMS': '#f43f5e',
+            'NEW CLIENT 1': '#84cc16'
+        };
+
+        function CapacityChart() {
+            const [selectedPerson, setSelectedPerson] = useState(null);
+            const [hoveredSegment, setHoveredSegment] = useState(null);
+            const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+
+            const months = ['Sept', 'Oct', 'Nov', 'Dec'];
+
+            const handleSegmentHover = (e, person, month, project) => {
+                setHoveredSegment({ person, month, project });
+                setTooltipPos({ x: e.clientX, y: e.clientY });
+            };
+
+            const handleSegmentLeave = () => {
+                setHoveredSegment(null);
+            };
+
+            const getAllocationBadge = (total) => {
+                if (total > 100) {
+                    return <span className="allocation-badge badge-over">Over {Math.round(total)}%</span>;
+                } else if (total === 100) {
+                    return <span className="allocation-badge badge-full">100%</span>;
+                } else if (total > 0) {
+                    return <span className="allocation-badge badge-under">{Math.round(total)}%</span>;
+                }
+                return null;
+            };
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>Team Capacity Allocation</h1>
+                        <p style={{color: '#666'}}>September - December 2025</p>
+                    </div>
+
+                    <div className="grid">
+                        {Object.entries(CAPACITY_DATA).map(([person, data]) => {
+                            const allProjects = new Set();
+                            months.forEach(month => {
+                                data.projects[month].forEach(p => allProjects.add(p.project));
+                            });
+
+                            return (
+                                <div key={person} className="person-card">
+                                    <div className="person-name">
+                                        {person}
+                                        {months.map(month => {
+                                            const total = data.totals[month];
+                                            if (total > 100) {
+                                                return getAllocationBadge(total);
+                                            }
+                                            return null;
+                                        })[0]}
+                                    </div>
+
+                                    <div className="chart-container">
+                                        {months.map(month => {
+                                            const monthData = data.projects[month];
+                                            const total = data.totals[month];
+                                            
+                                            return (
+                                                <div key={month} className="month-column">
+                                                    <div className="total-label">{Math.round(total)}%</div>
+                                                    <div className={`bar-container ${total > 100 ? 'overallocated' : ''}`}>
+                                                        {monthData.map((segment, idx) => {
+                                                            const height = (segment.value / 100) * 250;
+                                                            const color = PROJECT_COLORS[segment.project] || '#999';
+                                                            
+                                                            return (
+                                                                <div
+                                                                    key={idx}
+                                                                    className="bar-segment"
+                                                                    style={{
+                                                                        height: `${height}px`,
+                                                                        backgroundColor: color,
+                                                                        minHeight: segment.value < 5 ? '12px' : '0'
+                                                                    }}
+                                                                    onMouseEnter={(e) => handleSegmentHover(e, person, month, segment)}
+                                                                    onMouseLeave={handleSegmentLeave}
+                                                                >
+                                                                    {segment.value >= 15 && `${Math.round(segment.value)}%`}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    <div className="month-label">{month}</div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="legend">
+                                        {Array.from(allProjects).map(project => (
+                                            <div key={project} className="legend-item">
+                                                <div 
+                                                    className="legend-color" 
+                                                    style={{backgroundColor: PROJECT_COLORS[project] || '#999'}}
+                                                />
+                                                <span>{project}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {hoveredSegment && (
+                        <div 
+                            className="tooltip" 
+                            style={{
+                                display: 'block',
+                                left: `${tooltipPos.x + 10}px`,
+                                top: `${tooltipPos.y - 30}px`
+                            }}
+                        >
+                            {hoveredSegment.project.project}: {hoveredSegment.project.function} ({Math.round(hoveredSegment.project.value)}%)
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<CapacityChart />, document.getElementById('root'));
+    </script>
+</body>
+</html>
