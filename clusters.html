@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Cluster Teams</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a1a;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden;
+        }
+        
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .title {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 100;
+        }
+        
+        .subtitle {
+            position: absolute;
+            top: 65px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            letter-spacing: 2px;
+            z-index: 100;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            z-index: 100;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .question-box {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 280px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            line-height: 1.6;
+            z-index: 100;
+        }
+        
+        .question-box h3 {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .question-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .question-box li {
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .question-box li::before {
+            content: "?";
+            position: absolute;
+            left: 0;
+            color: rgba(255, 200, 100, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Floating Clusters</div>
+        <div class="subtitle">Autonomous delivery teams in gravitational orbit</div>
+        
+        <canvas id="canvas"></canvas>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: rgba(100, 200, 255, 0.8);"></div>
+                <span>Team Member</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: rgba(255, 180, 100, 0.8);"></div>
+                <span>Client Project</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: rgba(180, 100, 255, 0.3); border: 2px dashed rgba(180, 100, 255, 0.5);"></div>
+                <span>Cluster Boundary</span>
+            </div>
+        </div>
+        
+        <div class="question-box">
+            <h3>Open Questions</h3>
+            <ul>
+                <li>Who provides direction when clusters drift?</li>
+                <li>How do clusters coordinate on shared concerns?</li>
+                <li>What pulls clusters together vs apart?</li>
+                <li>Where does accountability live?</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        
+        // Cluster definitions
+        const clusters = [
+            { 
+                name: "OSTE", 
+                color: "rgba(255, 150, 100, 0.8)",
+                members: ["Ana", "Pero"],
+                x: 0, y: 0, vx: 0.3, vy: 0.2,
+                baseX: 0.25, baseY: 0.35
+            },
+            { 
+                name: "Olympus", 
+                color: "rgba(100, 200, 255, 0.8)",
+                members: ["Marko", "Ivan", "Tea"],
+                x: 0, y: 0, vx: -0.2, vy: 0.25,
+                baseX: 0.7, baseY: 0.3
+            },
+            { 
+                name: "Client C", 
+                color: "rgba(100, 255, 180, 0.8)",
+                members: ["Luka", "Sara"],
+                x: 0, y: 0, vx: 0.15, vy: -0.3,
+                baseX: 0.3, baseY: 0.65
+            },
+            { 
+                name: "Client D", 
+                color: "rgba(255, 100, 150, 0.8)",
+                members: ["Mia", "Dario"],
+                x: 0, y: 0, vx: -0.25, vy: -0.15,
+                baseX: 0.65, baseY: 0.7
+            },
+            { 
+                name: "Client E", 
+                color: "rgba(200, 200, 100, 0.8)",
+                members: ["Petra", "Tin"],
+                x: 0, y: 0, vx: 0.2, vy: 0.1,
+                baseX: 0.5, baseY: 0.45
+            }
+        ];
+        
+        // Initialize positions
+        clusters.forEach(c => {
+            c.x = c.baseX * width;
+            c.y = c.baseY * height;
+            c.angle = Math.random() * Math.PI * 2;
+            c.orbitRadius = 80 + Math.random() * 40;
+            c.orbitSpeed = 0.0005 + Math.random() * 0.0005;
+        });
+        
+        // Stars background
+        const stars = [];
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                size: Math.random() * 1.5,
+                opacity: Math.random() * 0.5 + 0.1
+            });
+        }
+        
+        // Connection lines between nearby clusters
+        function drawConnections() {
+            clusters.forEach((c1, i) => {
+                clusters.forEach((c2, j) => {
+                    if (i >= j) return;
+                    const dist = Math.hypot(c1.x - c2.x, c1.y - c2.y);
+                    if (dist < 250) {
+                        const opacity = (1 - dist / 250) * 0.15;
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+                        ctx.setLineDash([5, 10]);
+                        ctx.moveTo(c1.x, c1.y);
+                        ctx.lineTo(c2.x, c2.y);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                });
+            });
+        }
+        
+        function drawCluster(cluster, time) {
+            const { x, y, name, color, members } = cluster;
+            
+            // Cluster boundary (nebula effect)
+            const clusterRadius = 70 + members.length * 15;
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, clusterRadius);
+            gradient.addColorStop(0, color.replace('0.8', '0.1'));
+            gradient.addColorStop(0.7, color.replace('0.8', '0.05'));
+            gradient.addColorStop(1, 'transparent');
+            
+            ctx.beginPath();
+            ctx.fillStyle = gradient;
+            ctx.arc(x, y, clusterRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Dashed boundary
+            ctx.beginPath();
+            ctx.strokeStyle = color.replace('0.8', '0.3');
+            ctx.setLineDash([8, 8]);
+            ctx.lineWidth = 1;
+            ctx.arc(x, y, clusterRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Client project (center)
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 20;
+            ctx.arc(x, y, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            // Client name
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '11px Segoe UI';
+            ctx.textAlign = 'center';
+            ctx.fillText(name, x, y + 4);
+            
+            // Team members orbiting
+            members.forEach((member, i) => {
+                const angle = (time * cluster.orbitSpeed) + (i * Math.PI * 2 / members.length);
+                const orbitRadius = 40 + (i % 2) * 15;
+                const mx = x + Math.cos(angle) * orbitRadius;
+                const my = y + Math.sin(angle) * orbitRadius;
+                
+                // Member dot
+                ctx.beginPath();
+                ctx.fillStyle = 'rgba(100, 200, 255, 0.8)';
+                ctx.shadowColor = 'rgba(100, 200, 255, 0.5)';
+                ctx.shadowBlur = 10;
+                ctx.arc(mx, my, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                // Member name
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '10px Segoe UI';
+                ctx.fillText(member, mx, my + 20);
+                
+                // Connection to client
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.moveTo(x, y);
+                ctx.lineTo(mx, my);
+                ctx.stroke();
+            });
+        }
+        
+        function animate(time) {
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Draw stars
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Update cluster positions (gentle drift)
+            clusters.forEach(c => {
+                c.angle += c.orbitSpeed;
+                c.x = c.baseX * width + Math.sin(time * 0.0003 + c.angle) * c.orbitRadius;
+                c.y = c.baseY * height + Math.cos(time * 0.0002 + c.angle) * c.orbitRadius * 0.6;
+            });
+            
+            drawConnections();
+            
+            clusters.forEach(c => drawCluster(c, time));
+            
+            // Central question mark
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.font = '120px Segoe UI';
+            ctx.textAlign = 'center';
+            ctx.fillText('?', width / 2, height / 2 + 40);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate(0);
+    </script>
+</body>
+</html>
