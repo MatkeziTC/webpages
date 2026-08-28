@@ -1,0 +1,543 @@
+<title>Punomoć za Đoletu</title>
+<style>
+  :root {
+    --bg: #f3f1ea;
+    --surface: #ffffff;
+    --surface-2: #faf9f5;
+    --ink: #211f1a;
+    --ink-soft: #6b6558;
+    --ink-faint: #a39c8c;
+    --line: #e3ddd0;
+    --accent: #a34e2f;
+    --accent-soft: #f4e4dc;
+    --accent-ink: #7a3a22;
+    --gate: #b5791f;
+    --gate-soft: #faf0dd;
+    --gate-ink: #7a5312;
+    --matko: #2f5f8a;
+    --matko-soft: #e2ecf4;
+    --djole: #6b4a8a;
+    --djole-soft: #ece3f4;
+    --susjedi: #3f7d4f;
+    --susjedi-soft: #e2f0e4;
+    --note-bg: #f6f4ee;
+    --focus: #a34e2f;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1c1a16;
+      --surface: #262319;
+      --surface-2: #2b2820;
+      --ink: #ede8de;
+      --ink-soft: #b3ab99;
+      --ink-faint: #7d7566;
+      --line: #3a3629;
+      --accent: #d98a63;
+      --accent-soft: #3a2a20;
+      --accent-ink: #f0b393;
+      --gate: #d9a441;
+      --gate-soft: #3a2f16;
+      --gate-ink: #f0c46e;
+      --matko: #7fb0dd;
+      --matko-soft: #22303e;
+      --djole: #b79bda;
+      --djole-soft: #2c2438;
+      --susjedi: #83c194;
+      --susjedi-soft: #1f2f22;
+      --note-bg: #23211a;
+      --focus: #d98a63;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #1c1a16;
+    --surface: #262319;
+    --surface-2: #2b2820;
+    --ink: #ede8de;
+    --ink-soft: #b3ab99;
+    --ink-faint: #7d7566;
+    --line: #3a3629;
+    --accent: #d98a63;
+    --accent-soft: #3a2a20;
+    --accent-ink: #f0b393;
+    --gate: #d9a441;
+    --gate-soft: #3a2f16;
+    --gate-ink: #f0c46e;
+    --matko: #7fb0dd;
+    --matko-soft: #22303e;
+    --djole: #b79bda;
+    --djole-soft: #2c2438;
+    --susjedi: #83c194;
+    --susjedi-soft: #1f2f22;
+    --note-bg: #23211a;
+    --focus: #d98a63;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @font-face {
+    font-family: 'Fraunces';
+    src: local('Fraunces');
+  }
+
+  body {
+    font-family: 'Source Sans 3', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 32px 18px 56px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  h1, .display {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-optical-sizing: auto;
+  }
+
+  header { margin-bottom: 22px; }
+  header .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent-ink); margin-bottom: 6px;
+  }
+  header h1 {
+    font-size: 26px; font-weight: 600; color: var(--ink); text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+  header p { font-size: 13px; color: var(--ink-soft); margin-top: 6px; max-width: 60ch; }
+
+  .progress-wrap {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 16px;
+  }
+  .progress-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
+  .progress-label { font-size: 12px; color: var(--ink-soft); }
+  .progress-count {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .progress-bar-bg { background: var(--line); border-radius: 20px; height: 7px; overflow: hidden; }
+  .progress-bar-fill {
+    background: var(--accent); height: 100%; border-radius: 20px;
+    transition: width 0.35s ease;
+  }
+
+  .flow-note {
+    background: var(--note-bg); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 12px 14px; font-size: 12.5px; color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .flow-note strong { color: var(--ink); font-weight: 600; }
+
+  .section {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+  }
+  .section.gate { border-color: var(--gate); }
+
+  .section-header {
+    display: flex; align-items: center; gap: 11px;
+    padding: 13px 16px; background: var(--surface-2); border-bottom: 1px solid var(--line);
+  }
+  .section-num {
+    width: 25px; height: 25px; border-radius: 50%; background: var(--ink); color: var(--surface);
+    font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-variant-numeric: tabular-nums;
+  }
+  .section-num.gate-num { background: var(--gate); color: #2a1c02; }
+  .section-title { font-weight: 700; font-size: 14px; flex: 1; color: var(--ink); }
+  .section-meta { font-size: 11px; color: var(--ink-faint); white-space: nowrap; }
+
+  .section-body { padding: 4px 16px 10px; }
+
+  .item-row {
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  .item-row:last-child { border-bottom: none; }
+
+  .checkbox {
+    width: 19px; height: 19px; border-radius: 5px; border: 1.5px solid var(--ink-faint);
+    flex-shrink: 0; margin-top: 1px; cursor: pointer; position: relative;
+    background: var(--surface); transition: all 0.15s;
+  }
+  .checkbox:hover { border-color: var(--accent); }
+  .checkbox:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .checkbox.checked { background: var(--accent); border-color: var(--accent); }
+  .checkbox.checked::after {
+    content: '✓'; position: absolute; inset: 0; color: #fff;
+    font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  }
+
+  .item-content { flex: 1; min-width: 0; }
+  .item-title { font-size: 13.5px; font-weight: 500; color: var(--ink); cursor: pointer; }
+  .item-title.checked { text-decoration: line-through; color: var(--ink-faint); }
+  .item-who {
+    display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 20px; margin-top: 6px; margin-right: 5px; letter-spacing: 0.01em;
+  }
+  .who-matko { background: var(--matko-soft); color: var(--matko); }
+  .who-djole { background: var(--djole-soft); color: var(--djole); }
+  .who-susjedi { background: var(--susjedi-soft); color: var(--susjedi); }
+
+  .item-note {
+    font-size: 12px; color: var(--ink-soft); background: var(--note-bg);
+    border-left: 2px solid var(--line); padding: 6px 9px;
+    margin-top: 7px; border-radius: 0 6px 6px 0;
+  }
+
+  .arrow-down {
+    text-align: center; color: var(--ink-faint); font-size: 15px; margin: 2px 0 6px;
+    font-family: 'Fraunces', serif;
+  }
+
+  .updated {
+    font-size: 11.5px; color: var(--ink-faint); margin-top: 24px; padding-top: 14px;
+    border-top: 1px solid var(--line); line-height: 1.6;
+  }
+
+  .reset-btn {
+    font-size: 11.5px; color: var(--ink-soft); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 7px; padding: 6px 12px; cursor: pointer; margin-top: 10px;
+  }
+  .reset-btn:hover { border-color: var(--ink-faint); color: var(--ink); }
+  .reset-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress-bar-fill, .checkbox { transition: none; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+
+<header>
+  <div class="eyebrow">Bežanijska 15 · Zemun</div>
+  <h1>Punomoć za Đoletu</h1>
+  <p>Redoslijed i checklist za komunalije, PIB/PPI-2 i etažiranje — što Matko radi sam, a što ide preko punomoći na Đoletu. Ne uključuje kupoprodajni ugovor.</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="progress-label">Ukupan napredak</span>
+    <span class="progress-count" id="progress-count">0 / 0</span>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+</div>
+
+<div class="flow-note">
+  <strong>Podjela rada:</strong> Prvo se potvrđuje da su oba susjeda uistinu za etažiranje, a ne za prodaju cijele parcele — bez toga nema smisla pripremati dokumente. Onda Đole unaprijed priprema oba dokumenta u konačnom obliku — punomoć za Matka i suglasnost za etažiranje/EPS za susjede — tako da svatko kod notara samo potpisuje gotov tekst, bez usklađivanja na licu mjesta. Matko ide kod notara u Beogradu <strong>jednom</strong>, zajedno s Đoletom, i potpisuje svoju punomoć. Susjedi potpisuju isti predložak suglasnosti kod svog notara, odvojeno, kad njima odgovara — Matko ne mora biti prisutan.
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">1</span>
+    <span class="section-title">Matko + Đole — Đole priprema oba dokumenta</span>
+    <span class="section-meta">prije bilo kojeg notara</span>
+  </div>
+  <div class="section-body">
+    <div class="item-row">
+      <div class="checkbox" data-id="s1-1" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s1-1">Potvrditi sa oba susjeda da svi žele etažiranje — ne prodaju cijele parcele/kuće u cjelini</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-susjedi">Teodora</span><span class="item-who who-susjedi">Susjed 2</span></div>
+        <div class="item-note">Preduvjet prije nego Đole uopće počne pripremati dokumente ispod — ako bilo tko od suvlasnika radije proda cijelu parcelu/kuću umjesto etažiranja, cijela ova grana (etažiranje, punomoć u ovom opsegu) otpada i treba se dogovoriti drugi pravni put. Teodora je 25.6.2026. usmeno potvrdila etažiranje; treba isto čuti izravno i od susjeda 2, ne samo pretpostaviti preko Teodorine procjene.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s1-2" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s1-2">Potvrditi s Đoletom da punomoć pokriva točno: PR-3/PIB, PPI-2, EPS, Infostan, etažiranje pred RGZ-om</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Isključivo administrativni/upravni koraci — ne uključuje pregovaranje ni potpis kupoprodajnog ugovora, to je odvojeno i kasnije pitanje.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s1-3" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s1-3">Pitati Đoleta treba li Infostan obrazac (Molba za promjenu imena) sad ili tek pri prodaji</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Infostan odgovor (13.7.): promjena imena po pravilu pada na kupca nakon ovjere ugovora — obrazac je već preuzet i spreman, ali možda ga uopće ne treba pokrivati ovom punomoći.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s1-4" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s1-4">Đole priprema gotov tekst punomoći za Matka (na srpskom, u pravnoj formi)</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Ovo je dokument koji Matko potpisuje kod notara u koraku 3 — gotov, ne nacrt za daljnje mijenjanje na licu mjesta.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s1-5" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s1-5">Đole priprema gotov tekst suglasnosti za etažiranje i EPS — isti predložak za oba susjeda</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Jedan te isti dokument (ili dva kratka dokumenta — etažiranje i EPS zasebno, ovisi kako Đole savjetuje) koji Teodora i susjed 2 samo potpisuju kod svog notara. Time se izbjegava da svaki susjed nosi svoju verziju teksta ili da se nešto naknadno usklađuje.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">2</span>
+    <span class="section-title">Matko sam — razgovor sa susjedima</span>
+    <span class="section-meta">nakon što Đole pošalje predložak</span>
+  </div>
+  <div class="section-body">
+    <div class="item-row">
+      <div class="checkbox" data-id="s2-1" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s2-1">Proslijediti Teodori gotov dokument od Đoleta i dogovoriti kad ga ide potpisati kod notara</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-susjedi">Teodora</span></div>
+        <div class="item-note">Teodora je usmeno pristala 25.6.2026. na etažiranje i popravak krova — sad se to formalizira gotovim dokumentom iz koraka 1.4, ne novim dogovaranjem oko forme.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s2-2" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s2-2">Proslijediti isti dokument trećem suvlasniku (susjed dolje) i zatražiti isto</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-susjedi">Susjed 2</span></div>
+        <div class="item-note">Teodora misli da neće praviti problem. Ako pristaje na etažiranje — potpisuje isti dokument kao Teodora. Ako radije prodaje svoj dio — i to je Matku prihvatljivo, samo drugi pravni put (izvan ove punomoći).</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s2-3" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s2-3">Ako susjedi radije idu fizički u EPS poslovnicu umjesto notara — dogovoriti to kao alternativu</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-susjedi">Susjedi</span></div>
+        <div class="item-note">EPS odgovor (13.7.): zbog suvlasništva treba ILI notarski ovjerena suglasnost svakog suvlasnika ILI svi troje fizički odu u poslovnicu i daju izjavu na licu mjesta. Ovo drugo je jedina situacija gdje susjedi (i po potrebi Matko) moraju biti fizički zajedno — inače svatko potpisuje odvojeno, u svoje vrijeme, kod svog notara.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">3</span>
+    <span class="section-title">Matko sam — ponijeti osobnu na notara</span>
+    <span class="section-meta">paralelno sa 1–2</span>
+  </div>
+  <div class="section-body">
+    <div class="item-row">
+      <div class="checkbox" data-id="s3-1" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s3-1">Rješenje o nasljeđivanju — već kod Đoleta, ne treba ga nositi</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Đole već ima ovaj dokument, pa se koristi izravno iz njegovih materijala za PIB, PPI-2 i EPS zahtjev — Matko ga ne treba tražiti niti nositi na notara.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s3-2" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s3-2">Kopija osobne iskaznice / putovnice (za notara i za tekst punomoći)</div>
+        <div><span class="item-who who-matko">Matko</span></div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s3-3" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s3-3">Đoletovi identifikacijski podaci (puno ime, broj legitimacije, adresa) za tekst punomoći</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+
+<div class="section gate">
+  <div class="section-header">
+    <span class="section-num gate-num">4</span>
+    <span class="section-title">Matko u Beogradu — jedan odlazak kod notara s Đoletom</span>
+    <span class="section-meta">zajedno, uživo</span>
+  </div>
+  <div class="section-body">
+    <div class="item-row">
+      <div class="checkbox" data-id="s4-1" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s4-1">Dogovoriti s Đoletom termin kod notara u Beogradu, usklađen s Matkovim putovanjem</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Budući da Matko dolazi osobno, punomoć se ovjerava izravno kod srpskog notara zajedno s Đoletom — otpada hrvatski bilježnik/Apostille i slanje poštom, jer je original odmah dostupan Đoletu na licu mjesta.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s4-2" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s4-2">Ponijeti osobnu na termin kod notara (rješenje o nasljeđivanju nije potrebno nositi — već je kod Đoleta)</div>
+        <div><span class="item-who who-matko">Matko</span></div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s4-3" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s4-3">Notar ovjerava gotov tekst punomoći iz koraka 1.3 — Matko potpisuje, samo jedan odlazak</div>
+        <div><span class="item-who who-matko">Matko</span><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Kako je tekst već gotov od Đoleta, ovo je jedan kratak termin, ne pregovaranje o formulaciji na licu mjesta. Original odmah ostaje kod Đoleta.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s4-4" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s4-4">Susjedi potpisuju svoj dokument (iz koraka 1.4) odvojeno — Matko vjerojatno neće biti prisutan</div>
+        <div><span class="item-who who-susjedi">Teodora</span><span class="item-who who-susjedi">Susjed 2</span></div>
+        <div class="item-note">Ako Matkov termin u Beogradu ne poklopi s njihovim, to je u redu — vidi napomenu u koraku 2.3. Susjedi mogu svoj dio ovjeriti prije, poslije, ili kod potpuno drugog notara, jer je dokument već gotov i identičan za oboje; Đole samo treba dobiti taj papir prije nego što EPS zahtjev (korak 5.3) ili sporazum o etažiranju (korak 5.7) podnese.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">5</span>
+    <span class="section-title">Đole samostalno — po institucijama</span>
+    <span class="section-meta">redoslijed izvršenja</span>
+  </div>
+  <div class="section-body">
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-1" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-1">PR-3 → ishoduje PIB za Matka (nerezident)</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Preduvjet za PPI-2 — mora biti prvo. Potvrda u roku 5 radnih dana od uredne prijave.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-2" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-2">PPI-2 Poreznoj upravi Zemun — uz presliku rješenja o ostavinskoj raspravi i PIB</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Porezna uprava Zemun (Igor Ivanovski, 13.7.): prihvaća predaju preko odvjetnika s ovjerenom punomoći. Treba obrazac PPI-2 + preslika rješenja + PIB.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-3" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-3">EPS — zahtjev za prijenos struje na email ugovaranje.bg@eps.rs</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Uz Rešenje o nasleđivanju + ovjerenu suglasnost susjeda iz koraka 1.3 (ili zapisnik da su svi troje bili u poslovnici).</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-4" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-4">Infostan — samo ako je odlučeno u koraku 2.2 da se rješava sad, ne pri prodaji</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Treba: Molba za promjenu imena (obrazac spreman), fotokopija ugovora o kupoprodaji + original na uvid, potvrda upravnika o broju članova domaćinstva (ako se troškovi računaju po članovima). Nadležna ekspozitura: Zemun, Dr. Nedeljka Ercegovca 27.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-5" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-5">Provjerava arhive za postojeći arhitektonski/geodetski projekat</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Ako postoji → ide se odmah na etažiranje. Ako ne postoji → mora se naručiti novi, ograničen na Matka + 2 susjeda.</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-6" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-6">Angažira geodeta i priprema elaborat etažiranja (ako projekat treba iznova)</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-7" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-7">Priprema sporazum o etažiranju kod bilježnika i predaje elaborat RGZ-u</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Sva 3 suvlasnika (ili njihovi punomoćnici) potpisuju sporazum kod bilježnika prije predaje RGZ-u. Susjedi trebaju biti spremni s vlastitom ovjerenom suglasnošću do ovog koraka (vidi 2.1–2.2).</div>
+      </div>
+    </div>
+    <div class="item-row">
+      <div class="checkbox" data-id="s5-8" tabindex="0" role="checkbox" aria-checked="false"></div>
+      <div class="item-content">
+        <div class="item-title" data-id="s5-8">Zastupa Matka pred RGZ-om do upisa etažne jedinice</div>
+        <div><span class="item-who who-djole">Đole</span></div>
+        <div class="item-note">Zadnji korak ove punomoći — nakon ovog Matkov vlasni list glasi na zaseban stan, ne na 1/3 kuće. Prodaja i kupoprodajni ugovor su odvojena, kasnija tema.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="updated" id="updated-line">
+  Ažurirano: 27. kolovoza 2026. — Rješenje o nasljeđivanju je već kod Đoleta, Matko ga ne treba nositi na notara. Đole unaprijed priprema gotov tekst i punomoći i suglasnosti za susjede, tako da Matko kod notara u Beogradu ide samo jednom (zajedno s Đoletom), a susjedi potpisuju isti gotov predložak odvojeno, kod svog notara. Punomoć pokriva samo administrativne korake (PIB, PPI-2, komunalije, etažiranje) — ne kupoprodajni ugovor. Kvačice se pamte lokalno u ovom pregledniku, po uređaju.
+</div>
+<button class="reset-btn" id="reset-btn" type="button">Resetiraj checklist</button>
+
+<script>
+(function () {
+  var STORAGE_KEY = 'punomoc-tracker-zemun-v1';
+  var state = {};
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) state = JSON.parse(saved);
+  } catch (e) { state = {}; }
+
+  var boxes = document.querySelectorAll('.checkbox[data-id]');
+  var total = boxes.length;
+
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function updateProgress() {
+    var done = 0;
+    boxes.forEach(function (b) {
+      if (state[b.getAttribute('data-id')]) done++;
+    });
+    document.getElementById('progress-count').textContent = done + ' / ' + total;
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }
+
+  function applyState() {
+    boxes.forEach(function (b) {
+      var id = b.getAttribute('data-id');
+      var checked = !!state[id];
+      b.classList.toggle('checked', checked);
+      b.setAttribute('aria-checked', checked ? 'true' : 'false');
+      var title = document.querySelector('.item-title[data-id="' + id + '"]');
+      if (title) title.classList.toggle('checked', checked);
+    });
+    updateProgress();
+  }
+
+  function toggleItem(id) {
+    state[id] = !state[id];
+    save();
+    applyState();
+  }
+
+  boxes.forEach(function (b) {
+    b.addEventListener('click', function () { toggleItem(b.getAttribute('data-id')); });
+    b.addEventListener('keydown', function (e) {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        toggleItem(b.getAttribute('data-id'));
+      }
+    });
+  });
+  document.querySelectorAll('.item-title[data-id]').forEach(function (t) {
+    t.addEventListener('click', function () { toggleItem(t.getAttribute('data-id')); });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    if (confirm('Resetirati sve kvačice?')) {
+      state = {};
+      save();
+      applyState();
+    }
+  });
+
+  applyState();
+})();
+</script>
